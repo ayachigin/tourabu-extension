@@ -8,7 +8,10 @@ notifier.defaultParams = function () {
         title: "刀剣乱舞エクステンション",
         body: "",
         timeout: 0,
-        onClicked: function () { console.log("notification/clicked"); },
+        onClicked: function () {
+            console.log("notification/clicked");
+            util.focusToukenRanbuTab();
+        },
         onClosed:  function () { console.log("notification/closed"); },
         onShowed:  function () {
             var self = this;

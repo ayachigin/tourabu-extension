@@ -1,6 +1,7 @@
 /* @flow */
 
-var util = util || {};
+var util = util || {},
+    chrome = chrome || {};
 
 String.prototype.isPrefixOf = function (s) {
     return s.slice(0, this.length) === '' + this;
@@ -20,6 +21,46 @@ Array.prototype.popAt = function (index) {
         this.splice(index, 1);
     }
     return this;
+};
+
+// getToukenRanbuTab Deferred <string>
+util.getToukenRanbuTab = function () {
+    var d = $.Deferred(),
+        isToukenRanbuUrl = function (u) {
+            return ("://www.dmm.com/netgame/social/-/gadgets/=/" +
+                    "app_id=825012/").isInfixOf(u);
+        };
+
+    chrome.windows.getAll(function (ws) {
+        var wid, i, l = ws.length;
+        for (i = 0; i < l; i++) {
+            wid = ws[i].id;
+            chrome.tabs.getAllInWindow(wid, function (tabs) {
+                var j, k = tabs.length, tab;
+                for (j = 0; j < k; j++) {
+                    tab = tabs[j];
+                    // 刀剣乱舞のたぶみつけた
+                    if (isToukenRanbuUrl(tab.url)) {
+                        console.log(tab.url);
+                        d.resolve(tab.id);
+                    }
+                }
+                // 刀剣乱舞のタブない
+                if (i === l) {
+                    d.reject();
+                }
+            });
+        }
+    });
+    return d;
+};
+
+util.focusToukenRanbuTab = function () {
+    util.getToukenRanbuTab().done(function (tabId) {
+        chrome.tabs.update(tabId, {active: true});
+    }).fail(function () {
+        chrome.tabs.create({url: "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=825012/"});
+    });
 };
 
 // lookup :: [(a, b)] -> a -> Maybe b
