@@ -12,10 +12,6 @@ function showLog() {
 
     console.log("ToukenRanbuExt");
 
-    function infixOf(a, b) {
-        return b.indexOf(a) !== -1;
-    }
-
     function onBeforeRequest (details) {
         var d = new Dispatcher(details);
         d.go();
