@@ -27,24 +27,37 @@ var Dispatcher = Dispatcher || {},
             console.log('dispatcher/go');
             switch (this.keyword) {
             case 'conquest/start':
-                this.forConquest();
+                this.forConquestStart();
                 break;
             case 'conquest/cancel':
+                this.forConquestCancel();
                 break;
             default:
                 //pass
             }
             return this;
         },
-        forConquest: function () {
-            console.log('dispatcher/conquest');
+        forConquestStart: function () {
+            console.log('dispatcher/conquest/start');
             this.maybe_body.fmap(function (body) {
-                var param = {
-                    party_no: body['party_no'][0],
-                    field_id: body['field_id'][0],
+                var party_no = body['party_no'][0],
+                    field_id = body['field_id'][0],
+                    param = {
+                    party_no: party_no,
+                    field_id: field_id,
                     type: 'conquest'
-                };
+                    };
+
                 timer.conquest(param);
+            });
+        },
+        forConquestCancel: function () {
+            console.log('dispatcher/conquest/cancel');
+            this.maybe_body.fmap(function (body) {
+                var party_no = body['party_no'][0];
+                timer.cancel(function(o) {
+                    return o.party_no === party_no;
+                });
             });
         }
     };
