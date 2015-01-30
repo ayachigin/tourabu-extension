@@ -33,40 +33,33 @@ var timer = timer || {},
      */
     timer.conquest = function (params) {
         window.console.log('timer/conquest');
-        // 遠征開始時
-        function start(milisec) {
-            var notifyParams = notifier.defaultParams();
-            notifyParams.timeout = 8000;
-
-            notifyParams.body  = "第" + params.party_no + "部隊が遠征に出発しました\n"
-                + (parseInt(milisec / 1000 / 60, 10))
-                + "分後に帰還します";
-            notifier.set(notifyParams);
-        }
-
-        // 遠征終了
-        function end(date) {
-            var timerParams = Object.create(params);
-            timerParams.date = date;
-            timerParams.callback = function(p) {
-                var notificationParams = notifier.defaultParams();
-                window.console.log('conquest/finished');
-                window.console.dir(p);
-
-                notificationParams.body = "部隊" + p.party_no
-                    + "が遠征から帰還しました";
-                notificationParams.icon = "assets/conquest_48.png";
-                notifier.set(notificationParams);
-            };
-            timer.set(timerParams);
-        }
 
         // 遠征通知
         util.lookup(conquestTimeTable, params.field_id).fmap(function (v) {
-            var d = new Date(Date.now() + v);
-            start(v);
-            end(d);
+            var d = new Date(Date.now() + v),
+                notifyParams = notifier.defaultParams();
+            notifyParams.timeout = 8000;
+
+            notifyParams.body  = "第" + params.party_no + "部隊が遠征に出発しました\n"
+                + (parseInt(v / 1000 / 60, 10))
+                + "分後に帰還します";
+            notifier.set(notifyParams);
+
+            params.date = d;
+            timer.set(params);
         });
         return this;
     };
+
+    timer.conquest.finished = function(params) {
+        var notificationParams = notifier.defaultParams();
+        window.console.log('conquest/finished');
+        window.console.dir(params);
+
+        notificationParams.body = "部隊" + params.party_no
+            + "が遠征から帰還しました";
+        notificationParams.icon = "assets/conquest_48.png";
+        notifier.set(notificationParams);
+    };
+
 }());

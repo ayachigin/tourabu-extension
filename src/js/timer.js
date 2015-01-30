@@ -10,54 +10,101 @@
  });
  */
 
-var timer = (function () {
-    var INTERVAL = 5000,
-        timers = [];
+var storage = storage || {},
+    timers = [],
+    timer = (function () {
+        var INTERVAL = 5000;
 
-    function Timer() {
-        this.start();
-    }
-
-    Timer.prototype.set = function (param) {
-        timers.push(param);
-        console.log('timer/set');
-        console.dir(timers);
-    };
-
-
-    // cancel :: (param -> bool) -> ()
-    Timer.prototype.cancel = function (f) {
-        console.log('timer/cancel');
-        var i, l = timers.length;
-        for (i = 0; i < l; i++) {
-            if(f(timers[i])) {
-                timers.splice(i, 1);
-                return this;
-            }
+        function Timer() {
+            this.loadTimers().done(function (ts) {
+                timers = timers.concat(ts);
+                console.log('timer/loaded');
+                console.dir(timers);
+            });
+            this.start();
         }
-        console.log('Non-existed timer');
-        return this;
-    };
 
-    Timer.prototype.start = function () {
-        var self = this;
-        window.setInterval(function () {
-            self.tick();
-        }, INTERVAL);
-    };
+        Timer.prototype.set = function (param) {
+            var self = this;
+            timers.push(param);
+            console.log('timer/set');
+            console.dir(param);
+            this.saveTimers();
+        };
 
-    Timer.prototype.tick = function() {
-        var now = new Date(),
-            i,
-            l = timers.length;
-        for (i = 0; i < l; i++) {
-            if (timers[i].date < now) {
-                timers[i].callback(timers[i]);
-                timers.splice(i, 1);
+        Timer.prototype.saveTimers = function () {
+            var timersToSave = [], i, l = timers.length;
+            for (i = 0; i < l; i++) {
+                timersToSave[i] = {};
+                for (var k in timers[i]) {
+                    timersToSave[i][k] = timers[i][k];
+                }
+                timersToSave[i].date = timersToSave[i].date.toString();
+            }
+            console.log('timersToSave');
+            console.dir(timersToSave);
+            storage.set({'timer_tasks': timersToSave});
+        };
+
+        Timer.prototype.loadTimers = function () {
+            var d = $.Deferred();
+            storage.get('timer_tasks', function (timerTasks) {
+                var i, l = timerTasks.length;
+                for (i = 0; i < l; i++) {
+                    timerTasks[i].date = new Date(timerTasks[i].date);
+                }
+                d.resolve(timerTasks);
+                storage.remove('timer_tasks');
+            });
+            return d;
+        };
+
+        // cancel :: (param -> bool) -> ()
+        Timer.prototype.cancel = function (f) {
+            console.log('timer/cancel');
+            var i, l = timers.length;
+            for (i = 0; i < l; i++) {
+                if(f(timers[i])) {
+                    timers.splice(i, 1);
+                    return this;
+                }
+            }
+            this.saveTimers();
+            console.log('Non-existed timer');
+            return this;
+        };
+
+        Timer.prototype.start = function () {
+            var self = this;
+            window.setInterval(function () {
+                self.tick();
+            }, INTERVAL);
+        };
+
+        Timer.prototype.finished = function (timerTask) {
+            switch (timerTask.type) {
+            case 'conquest':
+                this.conquest.finished(timerTask);
+                break;
+            default:
+                //pass
                 break;
             }
-        }
-    };
+        };
 
-    return new Timer();
-}());
+        Timer.prototype.tick = function() {
+            var now = new Date(),
+                i,
+                l = timers.length;
+            for (i = 0; i < l; i++) {
+                if (timers[i].date < now) {
+                    this.finished(timers[i]);
+                    timers.splice(i, 1);
+                    this.saveTimers();
+                    return this.tick();
+                }
+            }
+        };
+
+        return new Timer();
+    }());

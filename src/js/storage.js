@@ -31,6 +31,11 @@ storage = (function () {
         },
         set: function (obj, opt_callback) {
             this.storageArea.set(obj, opt_callback || function () {});
+        },
+        remove: function (key, opt_callback) {
+            this.storageArea.remove(key, opt_callback || function () {
+                console.log('storege/remove/' + key);
+            });
         }
     };
 
