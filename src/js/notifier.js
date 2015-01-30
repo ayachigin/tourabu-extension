@@ -5,7 +5,7 @@ var notifier = notifier || {};
 notifier.defaultParams = function () {
     return {
         icon: "assets/icon_touken_128.png",
-        title: "刀剣乱舞エクステンション",
+        title: "とうらぶえくすてんしょん",
         body: "",
         timeout: 0,
         onClicked: function () {

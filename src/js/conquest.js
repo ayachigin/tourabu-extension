@@ -38,7 +38,6 @@ var timer = timer || {},
             var notifyParams = notifier.defaultParams();
             notifyParams.timeout = 8000;
 
-            notifyParams.title = "遠征開始";
             notifyParams.body  = "第" + params.party_no + "部隊が遠征に出発しました\n"
                 + (parseInt(milisec / 1000 / 60, 10))
                 + "分後に帰還します";
@@ -54,7 +53,6 @@ var timer = timer || {},
                 window.console.log('conquest/finished');
                 window.console.dir(p);
 
-                notificationParams.title = "遠征終了";
                 notificationParams.body = "部隊" + p.party_no
                     + "が遠征から帰還しました";
                 notificationParams.icon = "assets/conquest_48.png";

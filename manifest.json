@@ -1,7 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "刀剣乱舞エクステンション",
-    "short_name": "とうらぶExtension",
+    "name": "とうらぶえくすてんしょん",
     "description": "",
     "version": "0.0.5",
     "minimum_chrome_version": "38",
@@ -10,7 +9,7 @@
         "default_icon": {
             "19": "assets/icon_19.png",
             "38": "assets/icon_38.png"},
-        "default_title": "とうらぶExtension",
+        "default_title": "とうらぶえくすてんしょん",
         "default_popup": "popup.html"
     },
 
