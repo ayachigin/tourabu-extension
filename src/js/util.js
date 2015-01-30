@@ -23,6 +23,14 @@ Array.prototype.popAt = function (index) {
     return this;
 };
 
+Object.prototype.isEmpty = function () {
+    return JSON.stringify(this) === '{}';
+};
+
+Array.prototype.isEmpty = function () {
+    return JSON.stringify(this) === '[]';
+};
+
 // getToukenRanbuTab Deferred <string>
 util.getToukenRanbuTab = function () {
     var d = $.Deferred(),
