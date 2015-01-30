@@ -1,5 +1,6 @@
 /* @flow */
-var timer = timer || {};
+var timer = timer || {},
+    notifier = notifier || {};
 
 (function () {
     'usestrict';
@@ -30,22 +31,43 @@ var timer = timer || {};
 
     /* 遠征タイマー設定
      */
-    timer.conquest = function (param) {
+    timer.conquest = function (params) {
         window.console.log('timer/conquest');
-        util.lookup(conquestTimeTable, param.field_id).fmap(function (v) {
-            var end = new Date(Date.now() + v);
-            param.date = end;
-            param.callback = function(p) {
-                var n, notificationParams = window.notifier.defaultParams();
+        // 遠征開始時
+        function start(milisec) {
+            var notifyParams = notifier.defaultParams();
+            notifyParams.timeout = 8000;
+
+            notifyParams.title = "遠征開始";
+            notifyParams.body  = "第" + params.party_no + "部隊が遠征に出発しました\n"
+                + (parseInt(milisec / 1000 / 60, 10))
+                + "分後に帰還します";
+            notifier.set(notifyParams);
+        }
+
+        // 遠征終了
+        function end(date) {
+            var timerParams = Object.create(params);
+            timerParams.date = date;
+            timerParams.callback = function(p) {
+                var notificationParams = notifier.defaultParams();
                 window.console.log('conquest/finished');
                 window.console.dir(p);
 
+                notificationParams.title = "遠征終了";
                 notificationParams.body = "部隊" + p.party_no
                     + "が遠征から帰還しました";
                 notificationParams.icon = "assets/conquest_48.png";
-                n = notifier.set(notificationParams);
+                notifier.set(notificationParams);
             };
-            timer.set(param);
+            timer.set(timerParams);
+        }
+
+        // 遠征通知
+        util.lookup(conquestTimeTable, params.field_id).fmap(function (v) {
+            var d = new Date(Date.now() + v);
+            start(v);
+            end(d);
         });
         return this;
     };

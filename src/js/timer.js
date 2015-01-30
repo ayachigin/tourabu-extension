@@ -28,9 +28,10 @@ var timer = timer || {};
 
     // cancel :: (param -> bool) -> ()
     Timer.prototype.cancel = function (f) {
+        console.log('timer/cancel');
         var i, l = timers.length;
         for (i = 0; i < l; i++) {
-            if(f(timers[i].param)) {
+            if(f(timers[i])) {
                 timers.splice(i, 1);
                 return this;
             }
