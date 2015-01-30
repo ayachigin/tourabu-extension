@@ -10,13 +10,12 @@
  });
  */
 
-var timer = timer || {};
-
-(function () {
-    var INTERVAL = 1000,
+var timer = (function () {
+    var INTERVAL = 5000,
         timers = [];
 
     function Timer() {
+        this.start();
     }
 
     Timer.prototype.set = function (param) {
@@ -40,9 +39,14 @@ var timer = timer || {};
         return this;
     };
 
-    timer = new Timer();
+    Timer.prototype.start = function () {
+        var self = this;
+        window.setInterval(function () {
+            self.tick();
+        }, INTERVAL);
+    };
 
-    function tick() {
+    Timer.prototype.tick = function() {
         var now = new Date(),
             i,
             l = timers.length;
@@ -53,9 +57,7 @@ var timer = timer || {};
                 break;
             }
         }
-        setTimeout(tick, INTERVAL);
-    }
+    };
 
-    tick();
-
+    return new Timer();
 }());
