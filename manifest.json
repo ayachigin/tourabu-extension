@@ -1,0 +1,45 @@
+{
+    "manifest_version": 2,
+    "name": "刀剣乱舞エクステンション",
+    "short_name": "とうらぶExtension",
+    "description": "",
+    "version": "0.0.5",
+    "minimum_chrome_version": "38",
+
+    "browser_action": {
+        "default_icon": {
+            "19": "assets/icon_19.png",
+            "38": "assets/icon_38.png"},
+        "default_title": "とうらぶExtension",
+        "default_popup": "popup.html"
+    },
+
+    "background": {
+        "persistent" : true,
+        "scripts": [
+            "src/js/jquery.min.js",
+            "src/js/util.js",
+            "src/js/notifier.js",
+            "src/js/timer.js",
+            "src/js/conquest.js",
+            "src/js/Dispatcher.js",
+            "src/js/repair.js",
+            "src/js/main.js"]
+    },
+
+    "author": "ayachi gin<ayachigin@gmail.com",
+
+    "permissions": [
+        "tabs",
+        "notifications",
+        "clipboardWrite",
+        "webRequest",
+        "<all_urls>"
+    ],
+
+    "icons": {
+        "16": "assets/icon_16.png",
+        "128": "assets/icon_128.png"
+    }
+
+}
