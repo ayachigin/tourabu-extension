@@ -6,7 +6,7 @@ var timer = timer || {},
     'usestrict';
 
     var conquestTimeTable = {
-        '0': 1000,
+        '0': 10000,
         '1':600000,
         '2':1800000,
         '3':1200000,
@@ -38,8 +38,8 @@ var timer = timer || {},
         util.lookup(conquestTimeTable, params.field_id).fmap(function (v) {
             var d = new Date(Date.now() + v),
                 notifyParams = notifier.defaultParams();
-            notifyParams.timeout = 8000;
-
+            notifyParams.timeout = 5000;
+            notifyParams.icon = "assets/conquest_48.png";
             notifyParams.body  = "第" + params.party_no + "部隊が遠征に出発しました\n"
                 + (parseInt(v / 1000 / 60, 10))
                 + "分後に帰還します";

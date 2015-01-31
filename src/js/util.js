@@ -43,21 +43,21 @@ util.getToukenRanbuTab = function () {
         var wid, i, l = ws.length;
         for (i = 0; i < l; i++) {
             wid = ws[i].id;
-            chrome.tabs.getAllInWindow(wid, function (tabs) {
-                var j, k = tabs.length, tab;
-                for (j = 0; j < k; j++) {
-                    tab = tabs[j];
-                    // 刀剣乱舞のたぶみつけた
-                    if (isToukenRanbuUrl(tab.url)) {
-                        console.log(tab.url);
-                        d.resolve(tab.id);
+            (function (i, l) {
+                chrome.tabs.getAllInWindow(wid, function (tabs) {
+                    var j, k = tabs.length, tab;
+                    for (j = 0; j < k; j++) {
+                        tab = tabs[j];
+                        // 刀剣乱舞のたぶみつけた
+                        if (isToukenRanbuUrl(tab.url)) {
+                            console.log("touranTab found", tab.url);
+                            d.resolve(tab.id);
+                        } else if (i === l - 1 && j === k - 1) {
+                            d.reject();
+                        }
                     }
-                }
-                // 刀剣乱舞のタブない
-                if (i === l) {
-                    d.reject();
-                }
-            });
+                });
+            }(i, l));
         }
     });
     return d;

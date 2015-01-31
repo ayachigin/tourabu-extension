@@ -36,7 +36,7 @@ var storage = storage || {},
             var timersToSave = [], i, l = timers.length;
             for (i = 0; i < l; i++) {
                 timersToSave[i] = {};
-                for (var k in timers[i]) {
+                for (var k in timers[i]) if (timers[i].hasOwnProperty(k)) {
                     timersToSave[i][k] = timers[i][k];
                 }
                 timersToSave[i].date = timersToSave[i].date.toString();
@@ -54,7 +54,6 @@ var storage = storage || {},
                     timerTasks[i].date = new Date(timerTasks[i].date);
                 }
                 d.resolve(timerTasks);
-                storage.remove('timer_tasks');
             });
             return d;
         };
