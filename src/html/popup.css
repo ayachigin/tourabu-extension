@@ -1,0 +1,33 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 300px;
+}
+
+body {
+    background-color: #f0f0f0;
+    padding: 10px;
+    color: #333;
+    text-shadow: 1px 1px 1px #000;
+}
+
+dt {
+    float:left;
+    display: block;
+    width 120px;
+}
+
+dd {
+    display: block;
+    margin-left: 130px;
+}
+
+h1 {
+    margin: 10px 0;
+    font-size: 1.6em;
+    transition: margin-left 1s;
+}
+
+h1:hover {
+    margin-left: 10px;
+}

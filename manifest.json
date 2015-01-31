@@ -10,7 +10,7 @@
             "19": "assets/icon_19.png",
             "38": "assets/icon_38.png"},
         "default_title": "とうらぶえくすてんしょん",
-        "default_popup": "popup.html"
+        "default_popup": "src/html/popup.html"
     },
 
     "background": {
