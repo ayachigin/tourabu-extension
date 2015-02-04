@@ -1,20 +1,13 @@
-/* @flow */
+var TourabuEx = TourabuEx || {},
+    chrome = chrome || {};
 
-var util = util || {},
-    chrome = chrome || {},
-    storage;
-
-storage = (function () {
+TourabuEx.storage = (function () {
     function Storage() {
         var self = this;
         this.storageArea = chrome.storage.sync || chrome.storage.local;
-        this.storage = chrome.storage;
-        this.onChanged = function (o, areaName) {
-            console.log('storage/change');
-            console.dir(o, areaName);
-        };
-        this.storage.onChanged.addListener(function (o, a) {
-            self.onChanged(o, a);
+
+        chrome.storage.onChanged.addListener(function (o, a) {
+            TourabuEx.events.trigger('storage/change', o, a);
         });
     }
 

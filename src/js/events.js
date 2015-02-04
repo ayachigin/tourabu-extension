@@ -1,4 +1,5 @@
-var TourabuEx = TourabuEx || {};
+var TourabuEx = TourabuEx || {},
+    $ = $ || function () {};
 
 TourabuEx.events = (function () {
     return {
@@ -10,6 +11,8 @@ TourabuEx.events = (function () {
         },
         trigger: function () {
             return $(TourabuEx).trigger.apply($(TourabuEx), arguments);
-        }
+        },
+        SECOND_CHANGE: 'second/change',
+        TIMER_CONQUEST_END: 'timer/conquest/end'
     };
 }());

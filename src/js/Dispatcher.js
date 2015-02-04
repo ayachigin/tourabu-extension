@@ -1,65 +1,56 @@
-/* @flow */
+var TourabuEx = TourabuEx || {},
+    chrome = chrome || {};
 
-var Dispatcher = Dispatcher || {},
-    util = util || {},
-    timer = timer || {},
-    notifier = notifier;
-
-(function () {
+TourabuEx.Dispatcher = (function () {
     'usestrict';
+    var util = TourabuEx.util;
 
-    Dispatcher = function (d) {
-        this.method = d.method;
-        this.maybe_body = util.nothing();
-        this.keyword = d.url.split("/").slice(3).join("/");
-        this.url = d.url;
-        this.isPost = function () { return this.method === 'POST'; };
-        this.isGet = function () { return this.method === 'GET'; };
+    // いろんなイベントが起きたら TourabuEx.events.trigger を叩くやつ
+    function Dispatcher() {
+        var self = this;
 
-        if (this.isPost()) {
-            this.maybe_body = util.maybe(d.requestBody.formData);
-            console.dir(this);
+        if (!(this instanceof Dispatcher)) {
+            return new Dispatcher();
         }
-    };
 
-    Dispatcher.prototype = {
-        go: function () {
-            console.log('dispatcher/go');
-            switch (this.keyword) {
-            case 'conquest/start':
-                this.forConquestStart();
-                break;
-            case 'conquest/cancel':
-                this.forConquestCancel();
-                break;
-            default:
-                //pass
-            }
-            return this;
-        },
-        forConquestStart: function () {
-            console.log('dispatcher/conquest/start');
-            this.maybe_body.fmap(function (body) {
-                var party_no = body['party_no'][0],
-                    field_id = body['field_id'][0],
-                    param = {
-                    party_no: party_no,
-                    field_id: field_id,
-                    type: 'conquest'
-                    };
-
-                timer.conquest(param);
-            });
-        },
-        forConquestCancel: function () {
-            console.log('dispatcher/conquest/cancel');
-            this.maybe_body.fmap(function (body) {
-                var party_no = body['party_no'][0];
-                timer.cancel(function(o) {
-                    return o.party_no === party_no;
-                });
-            });
+        if (Dispatcher.instance) {
+            return Dispatcher.instance;
         }
-    };
 
+        Dispatcher.instance = this;
+
+        startListeningRequest();
+        startTimer();
+        return this;
+    }
+
+    function startListeningRequest() {
+        chrome.webRequest.onBeforeRequest.addListener(
+            onBeforeRequest,
+            {urls: ["*://*.touken-ranbu.jp/*"]},
+            ['requestBody']);
+    }
+
+
+    function startTimer() {
+        window.setInterval(function () {
+            TourabuEx.events.trigger(TourabuEx.events.SECOND_CHANGE,
+                           parseInt(Date.now() / 1000, 10));
+        }, 1000);
+    }
+
+    function onBeforeRequest(d) {
+        if (d.method === 'GET') return;
+        
+        // http://w003.touken-ranbu.jp/mission/index てurlの mission/index の部分
+        var keyword = d.url.split("/").slice(3).join("/"),
+            param = {
+                method: d.method,
+                maybe_body: util.maybe(d.requestBody.formData),
+                url: d.url
+            };
+        TourabuEx.events.trigger(keyword, param);
+    }
+
+    return Dispatcher;
 }());
