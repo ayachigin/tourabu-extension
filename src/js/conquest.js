@@ -27,11 +27,18 @@ var TourabuEx = TourabuEx || {};
         '20':86400000
     };
 
+    function simplifyBody (body) {
+        return {
+            party_no: body.party_no[0],
+            field_id: body.field_id[0]
+        };
+    }
+
     // 遠征開始通知＆タイマー設定
     TourabuEx.events.bind('conquest/start', function (_, param) {
         // 遠征通知
         console.log('conquest.start', param);
-        param.maybe_body.fmap(function (body){
+        param.maybe_body.fmap(simplifyBody).fmap(function (body){
             var conquestTime = TourabuEx.util.lookup(conquestTimeTable, body.field_id);
             conquestTime.fmap(function (v) {
                 var d = new Date(Date.now() + v),
@@ -68,5 +75,18 @@ var TourabuEx = TourabuEx || {};
             + "が遠征から帰還しました";
         notificationParams.icon = "assets/conquest_48.png";
         TourabuEx.Notifier(notificationParams);
+    });
+
+    // 遠征キャンセル
+    TourabuEx.events.bind('conquest/cancel', function (_, param) {
+        var timer = TourabuEx.Timer();
+        console.log('conquest/cancel', param);
+        param.maybe_body.fmap(function (body) {
+            timer.cancel(function (task) {
+                console.log('timer/cancel', task);
+                return task.callbackParam.party_no === body.party_no[0];
+            });
+        });
+        console.log('conquest/cancel', o);
     });
 }());
