@@ -1,6 +1,4 @@
-/* @flow */
-var timer = timer || {},
-    notifier = notifier || {};
+var TourabuEx = TourabuEx || {};
 
 (function () {
     'usestrict';
@@ -29,37 +27,46 @@ var timer = timer || {},
         '20':86400000
     };
 
-    /* 遠征タイマー設定
-     */
-    timer.conquest = function (params) {
-        window.console.log('timer/conquest');
-
+    // 遠征開始通知＆タイマー設定
+    TourabuEx.events.bind('conquest/start', function (_, param) {
         // 遠征通知
-        util.lookup(conquestTimeTable, params.field_id).fmap(function (v) {
-            var d = new Date(Date.now() + v),
-                notifyParams = notifier.defaultParams();
-            notifyParams.timeout = 5000;
-            notifyParams.icon = "assets/conquest_48.png";
-            notifyParams.body  = "第" + params.party_no + "部隊が遠征に出発しました\n"
-                + (parseInt(v / 1000 / 60, 10))
-                + "分後に帰還します";
-            notifier.set(notifyParams);
+        console.log('conquest.start', param);
+        param.maybe_body.fmap(function (body){
+            var conquestTime = TourabuEx.util.lookup(conquestTimeTable, body.field_id);
+            conquestTime.fmap(function (v) {
+                var d = new Date(Date.now() + v),
+                    notifyparam = TourabuEx.Notifier.defaultParam(),
+                    timer = new TourabuEx.Timer(),
+                    timerParam = timer.defaultParam();
 
-            params.date = d;
-            timer.set(params);
+                notifyparam.timeout = 5000;
+                notifyparam.icon = "assets/conquest_48.png";
+                notifyparam.body  = "第" + body.party_no + "部隊が遠征に出発しました\n"
+                    + (parseInt(v / 1000 / 60, 10))
+                    + "分後に帰還します";
+                TourabuEx.Notifier(notifyparam);
+
+                timerParam.end = d;
+                timerParam.type = 'conquest';
+                timerParam.callbackParam = body;
+                timer.set(timerParam);
+            });
+
+            if (conquestTime.isNothing()) {
+                console.log('not in conquest time table', param);
+            }
         });
-        return this;
-    };
+    });
 
-    timer.conquest.finished = function(params) {
-        var notificationParams = notifier.defaultParams();
+    // 遠征終了通知
+    TourabuEx.events.bind('timer/conquest/end', function (_, param) {
+        var notificationParams = TourabuEx.Notifier.defaultParam();
         window.console.log('conquest/finished');
-        window.console.dir(params);
+        window.console.dir(param);
 
-        notificationParams.body = "部隊" + params.party_no
+        notificationParams.body = "部隊" + param.party_no
             + "が遠征から帰還しました";
         notificationParams.icon = "assets/conquest_48.png";
-        notifier.set(notificationParams);
-    };
-
+        TourabuEx.Notifier(notificationParams);
+    });
 }());
