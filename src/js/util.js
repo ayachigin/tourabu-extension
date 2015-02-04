@@ -1,7 +1,7 @@
-/* @flow */
-
-var util = util || {},
+var TourabuEx = TourabuEx || {},
     chrome = chrome || {};
+
+// プロトタイプ拡張
 
 String.prototype.isPrefixOf = function (s) {
     return s.slice(0, this.length) === '' + this;
@@ -23,6 +23,10 @@ Array.prototype.popAt = function (index) {
     return this;
 };
 
+Array.prototype.removeAt = function (index) {
+    this.popAt(index);
+};
+
 Object.prototype.isEmpty = function () {
     return JSON.stringify(this) === '{}';
 };
@@ -31,12 +35,19 @@ Array.prototype.isEmpty = function () {
     return JSON.stringify(this) === '[]';
 };
 
+Date.prototype.isValid = function () {
+    return this.toString() !== 'Invalid Date';
+};
+
+// ゆーてれてーかんすー
+TourabuEx.util = {};
+
 // getToukenRanbuTab Deferred <string>
-util.getToukenRanbuTab = function () {
+TourabuEx.util.getToukenRanbuTab = function () {
     var d = $.Deferred(),
         isToukenRanbuUrl = function (u) {
-            return ("://www.dmm.com/netgame/social/-/gadgets/=/" +
-                    "app_id=825012/").isInfixOf(u);
+            return ('://www.dmm.com/netgame/social/-/gadgets/=/' +
+                    'app_id=825012/').isInfixOf(u);
         };
 
     chrome.windows.getAll(function (ws) {
@@ -50,7 +61,7 @@ util.getToukenRanbuTab = function () {
                         tab = tabs[j];
                         // 刀剣乱舞のたぶみつけた
                         if (isToukenRanbuUrl(tab.url)) {
-                            console.log("touranTab found", tab.url);
+                            console.log('touranTab found', tab.url);
                             d.resolve(tab.id);
                         } else if (i === l - 1 && j === k - 1) {
                             d.reject();
@@ -63,28 +74,58 @@ util.getToukenRanbuTab = function () {
     return d;
 };
 
-util.focusToukenRanbuTab = function () {
-    util.getToukenRanbuTab().done(function (tabId) {
+TourabuEx.util.focusToukenRanbuTab = function () {
+    TourabuEx.util.getToukenRanbuTab().done(function (tabId) {
         chrome.tabs.update(tabId, {active: true});
     }).fail(function () {
-        chrome.tabs.create({url: "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=825012/"});
+        chrome.tabs.create({url: 'http://www.dmm.com/netgame/social/-/gadgets/=/app_id=825012/'});
     });
 };
 
+TourabuEx.util.prettyPrintMiliseconds = function (milisec) {
+    var r       = "",
+        day     = 24 * 60 * 60 * 1000,
+        hour    = 60 * 60 * 1000,
+        minute = 60 * 1000,
+        second  = 1000;
+
+    if (milisec >= day) {
+        r += parseInt(milisec / day, 10).toString() + '日';
+        milisec = milisec % day;
+    }
+
+    if (milisec >= hour) {
+        r += parseInt(milisec / hour, 10).toString() + '時間';
+        milisec = milisec % hour;
+    }
+
+    if (milisec >= minute) {
+        r += parseInt(milisec / minute, 10).toString() + '分';
+        milisec = milisec % minute;
+    }
+
+    if (milisec >= second) {
+        r += parseInt(milisec / second, 10).toString() + '秒';
+        milisec = milisec % second;
+    }
+
+    return r;
+};
+
 // lookup :: [(a, b)] -> a -> Maybe b
-util.lookup = function lookup (m, k) {
+TourabuEx.util.lookup = function lookup (m, k) {
     if (m.hasOwnProperty(k)) {
-        return util.just(m[k]);
+        return TourabuEx.util.just(m[k]);
     } else {
-        return util.nothing();
+        return TourabuEx.util.nothing();
     }
 };
 
-util.maybe = (function () {
+TourabuEx.util.maybe = (function () {
     function Maybe(v) {
         if (v !== null &&
             v !== undefined &&
-            !(typeof(v) === "number" && isNaN(v))) {
+            !(typeof(v) === 'number' && isNaN(v))) {
             this.hasValue = true;
             this.value = v;
         } else {
@@ -118,10 +159,10 @@ util.maybe = (function () {
     return function (v) { return new Maybe(v); };
 }());
 
-util.just = function just(v) {
-    return util.maybe(v);
+TourabuEx.util.just = function just(v) {
+    return TourabuEx.util.maybe(v);
 };
 
-util.nothing = function nothing() {
-    return util.maybe(null);
+TourabuEx.util.nothing = function nothing() {
+    return TourabuEx.util.maybe(null);
 };

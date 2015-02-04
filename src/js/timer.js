@@ -1,109 +1,118 @@
-/* @flow */
+var TourabuEx = TourabuEx || {},
+    $ = $ || function () {};
 
-/*
- timer.set("tid", "2015/1/29 0:48:00", "fuga",
- "Quest", {party: 2}, function (a) {console.log(a);});
- timer.set("tid", "2015/1/29 0:48:00", "hoge",
- "Quest", {party: 3}, function (a) {console.log(a);});
- timer.cancel("Quest", function (i) {
- return i.party === 3;
- });
- */
+TourabuEx.Timer = (function () {
 
-var storage = storage || {},
-    timers = [],
-    timer = (function () {
-        var INTERVAL = 5000;
-
-        function Timer() {
-            this.loadTimers().done(function (ts) {
-                timers = timers.concat(ts);
-                console.log('timer/loaded');
-                console.dir(timers);
-            });
-            this.start();
+    function Timer() {
+        // new つけ忘れたらつけて返す
+        if (!(this instanceof Timer)) {
+            return new Timer();
         }
 
-        Timer.prototype.set = function (param) {
-            var self = this;
-            timers.push(param);
-            console.log('timer/set');
-            console.dir(param);
-            this.saveTimers();
-        };
+        // しんぐるとん
+        if (Timer.instance) { return Timer.instance; }
 
-        Timer.prototype.saveTimers = function () {
-            var timersToSave = [], i, l = timers.length;
+        Timer.instance = this;
+        
+        // 通常の初期化処理
+        return this.init();
+    }
+
+    Timer.prototype.init = function () {
+        var events = TourabuEx.events,
+            self = this;
+
+        this.timers = [];
+        this.seconds = 0;
+        this.loadTimers();
+
+        events.bind(events.SECOND_CHANGE, function (e, s) {
+            if ((self.seconds++) % 5 === 0) {
+                self.checkTimers();
+            }
+        });
+
+        return this;
+    };
+
+    /*
+     this.timersの中身が終わってるかチェックする
+     終わっている奴があったらタイマー終わったイベントを投げる
+     */
+    Timer.prototype.checkTimers = function () {
+        var now = new Date(),
+            i,
+            l = this.timers.length,
+            types = ['timer'];
+        // リストの中身を消しながらループするのでうしろからぺろぺろする
+        for (i = l - 1; i >= 0; i--) {
+            if (this.timers[i].end < now) {
+                this.timers[i].type && types.push(this.timers[i].type);
+                types.push('end');
+                console.log('types:', types.join('/'));
+                TourabuEx.events.trigger(types.join('/'),
+                                         this.timers[i].callbackParam);
+                this.timers.removeAt(i);
+                this.saveTimers();
+            }
+        }
+    };
+
+    // Timer#setするときのデフォルトの引数Object
+    Timer.prototype.defaultParam = function () {
+        return {
+            end: new Date(),
+            type: "",
+            callbackParam: {}
+        };
+    };
+
+    Timer.prototype.set = function (param) {
+        this.timers.push(param);
+        this.saveTimers();
+    };
+
+    Timer.prototype.cancel = function (f) {
+        console.log('timer/cancel');
+        var i, l = this.timers.length;
+        for (i = 0; i < l; i++) {
+            if(f(this.timers[i])) {
+                this.timers.removeAt(i);
+                this.saveTimers();
+                return this;
+            }
+        }
+        return this;
+    };
+
+    Timer.prototype.saveTimers = function () {
+        var timersToSave = [], i, l = this.timers.length;
+        for (i = 0; i < l; i++) {
+            timersToSave[i] = {};
+            for (var k in this.timers[i]) if (this.timers[i].hasOwnProperty(k)) {
+                timersToSave[i][k] = this.timers[i][k];
+            }
+            timersToSave[i].end = timersToSave[i].end.toString();
+        }
+        console.log('timersToSave');
+        console.dir(timersToSave);
+        TourabuEx.storage.set({'timer_tasks': timersToSave});
+    };
+
+    Timer.prototype.loadTimers = function () {
+        var self = this;
+        TourabuEx.storage.get('timer_tasks', function (timerTasks) {
+            var i, l = timerTasks.length, d;
+            console.log(timerTasks);
             for (i = 0; i < l; i++) {
-                timersToSave[i] = {};
-                for (var k in timers[i]) if (timers[i].hasOwnProperty(k)) {
-                    timersToSave[i][k] = timers[i][k];
-                }
-                timersToSave[i].date = timersToSave[i].date.toString();
-            }
-            console.log('timersToSave');
-            console.dir(timersToSave);
-            storage.set({'timer_tasks': timersToSave});
-        };
-
-        Timer.prototype.loadTimers = function () {
-            var d = $.Deferred();
-            storage.get('timer_tasks', function (timerTasks) {
-                var i, l = timerTasks.length;
-                for (i = 0; i < l; i++) {
-                    timerTasks[i].date = new Date(timerTasks[i].date);
-                }
-                d.resolve(timerTasks);
-            });
-            return d;
-        };
-
-        // cancel :: (param -> bool) -> ()
-        Timer.prototype.cancel = function (f) {
-            console.log('timer/cancel');
-            var i, l = timers.length;
-            for (i = 0; i < l; i++) {
-                if(f(timers[i])) {
-                    timers.splice(i, 1);
-                    return this;
+                d = new Date(timerTasks[i].end);
+                if ( d.isValid() ) {
+                    timerTasks[i].end = d;
+                    self.timers.push(timerTasks[i]);
                 }
             }
-            this.saveTimers();
-            console.log('Non-existed timer');
-            return this;
-        };
+        });
+    };
 
-        Timer.prototype.start = function () {
-            var self = this;
-            window.setInterval(function () {
-                self.tick();
-            }, INTERVAL);
-        };
-
-        Timer.prototype.finished = function (timerTask) {
-            switch (timerTask.type) {
-            case 'conquest':
-                this.conquest.finished(timerTask);
-                break;
-            default:
-                //pass
-                break;
-            }
-        };
-
-        Timer.prototype.tick = function() {
-            var now = new Date(),
-                i,
-                l = timers.length;
-            for (i = 0; i < l; i++) {
-                if (timers[i].date < now) {
-                    this.finished(timers[i]);
-                    timers.splice(i, 1);
-                    this.saveTimers();
-                    return this.tick();
-                }
-            }
-        };
-
-        return new Timer();
-    }());
+    return Timer;
+}());

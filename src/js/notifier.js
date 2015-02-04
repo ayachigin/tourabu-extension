@@ -1,36 +1,6 @@
-/* @flow */
+var TourabuEx = TourabuEx || {};
 
-var notifier = notifier || {};
-
-notifier.defaultParams = function () {
-    return {
-        icon: "assets/icon_touken_128.png",
-        title: "とうらぶえくすてんしょん",
-        body: "",
-        timeout: 0,
-        onClicked: function () {
-            console.log("notification/clicked");
-            util.focusToukenRanbuTab();
-        },
-        onClosed:  function () { console.log("notification/closed"); },
-        onShowed:  function () {
-            var self = this;
-            console.log('timeout/' + self.timeout);
-            // タイムアウトがゼロなら表示しっぱなし
-            if (self.timeout === 0) { return true; }
-            // タイムアウトが設定されてたならnミリ秒後に消す
-            else {
-                setTimeout(function () {
-                    self.close();
-                }, self.timeout);
-                return true;
-            }
-        },
-        onError:   function () { console.log("notification/error"); }
-    };
-};
-
-notifier.set = function (params) {
+TourabuEx.Notifier = function (params) {
     var n = new window.Notification(params.title,
                                     {
                                         icon: params.icon,
@@ -38,8 +8,34 @@ notifier.set = function (params) {
                                     });
     n.onclick = params.onClicked;
     n.onclose = params.onClosed;
-    n.onshow  = params.onShowed;
+    n.onshow  = function () {
+        var self = this;
+        // タイムアウトがゼロなら表示しっぱなし
+        if (params.timeout === 0) { return; }
+        // タイムアウトが設定されてたならnミリ秒後に消す
+        else {
+            setTimeout(function () {
+                self.close();
+            }, params.timeout);
+            return;
+        }
+    };
     n.onerror = params.onError;
     n.timeout = params.timeout;
+    console.log('nitifier', n);
     return n;
+};
+
+TourabuEx.Notifier.defaultParam = function () {
+    return {
+        icon: "assets/icon_touken_128.png",
+        title: "とうらぶえくすてんしょん",
+        body: "",
+        timeout: 0,
+        onClicked: function () {
+            console.log("notification/clicked");
+            TourabuEx.util.focusToukenRanbuTab();
+        },
+        onError:   function () { console.log("notification/error"); }
+    };
 };

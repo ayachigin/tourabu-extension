@@ -9,11 +9,14 @@
         "persistent" : true,
         "scripts": [
             "src/js/jquery.min.js",
+            "src/js/TourabuEx.js",
             "src/js/util.js",
+            "src/js/events.js",
             "src/js/storage.js",
             "src/js/notifier.js",
             "src/js/timer.js",
             "src/js/conquest.js",
+            "src/js/duty.js",
             "src/js/Dispatcher.js",
             "src/js/repair.js",
             "src/js/main.js"]
