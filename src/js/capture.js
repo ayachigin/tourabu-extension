@@ -11,46 +11,64 @@ var TourabuEx = TourabuEx || {},
     });
 
     chrome.pageAction.onClicked.addListener(function (tab) {
-        var d1 = $.Deferred(),
-            d2 = $.Deferred();
-
         chrome.tabs.captureVisibleTab(tab.windowId, {format: 'png'}, function (dataurl) {
-            console.log('resolve/dataurl', dataurl);
-            d1.resolve(dataurl);
+            getDimension(tab).done(function (dimension) {
+                downloadImage(trimImage(dataurl, dimension));
+            });
         });
+        /*
+        var image = capture(tab),
+            dim   = getDimension(tab);
+        $.when(image, dim).done(function (dataurl, dimension) {
+            downloadImage(dimension, dataurl);
+            dataurl = dimension = image = dim = null;
+        });
+         */
+    });
 
+    function downloadImage(dataurl) {
+        var d = new Date(),
+            ds = d.toLocaleString().replace(/[\/:]/g, '-').replace(/\s/, '.'),
+            filename = 'とうらぶスクショ/' + ds + '.png';
+
+        chrome.downloads.download({url: dataurl,
+                                   filename: filename});
+    }
+
+    function capture(tab) {
+        var dfd = $.Deferred();
+        chrome.tabs.captureVisibleTab(tab.windowId, {format: 'png'}, function (dataurl) {
+            dfd.resolve(dataurl);
+        });
+        return dfd;
+    }
+
+    function getDimension(tab) {
+        var dfd = $.Deferred();
         chrome.tabs.sendMessage(tab.id, {type: 'capture/start'},
                                 function (dimension) {
-            console.log('resolve/dimension', dimension);
-            d2.resolve(dimension);
-        });
+                                    dfd.resolve(dimension);
+                                });
+        return dfd;
+    }
 
-        $.when(d1, d2).done(function (dataurl, dimension) {
-            var canvas = document.createElement('canvas'),
-                ctx = canvas.getContext('2d'),
-                img = document.createElement('img'),
-                trimemdDataurl;
+    function trimImage(dataurl, dimension) {
+        var img = document.createElement('img'),
+            canvas = document.createElement('canvas'),
+            ctx = canvas.getContext('2d');
+        img.src = dataurl;
+        canvas.width = dimension.width;
+        canvas.height = dimension.height;
+        ctx.drawImage(img,
+                      dimension.sx,
+                      dimension.sy,
+                      dimension.width,
+                      dimension.height,
+                      0, 0,
+                      dimension.width,
+                      dimension.height);
+        img = img.stc = ctx = null;
 
-            img.src = dataurl;
-            img.onload = function () {
-                var d = new Date(),
-                    ds = d.toLocaleString().replace(/[\/:]/g, '-').replace(/\s/, '.'),
-                    filename = 'とうらぶスクショ/' + ds + '.png';
-                canvas.width = dimension.width;
-                canvas.height = dimension.height;
-                ctx.drawImage(img,
-                              dimension.sx,
-                              dimension.sy,
-                              dimension.width,
-                              dimension.height,
-                              0, 0,
-                              dimension.width,
-                              dimension.height);
-                trimemdDataurl = canvas.toDataURL("image/png");
-
-                chrome.downloads.download({url: trimemdDataurl,
-                                           filename: filename});
-            };
-        });
-    });
+        return canvas.toDataURL("image/png");
+    }
 }());
