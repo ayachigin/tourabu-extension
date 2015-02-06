@@ -7,9 +7,7 @@ var chrome = chrome || {};
     chrome.runtime.sendMessage(message);
     console.log('message/sent');
     chrome.runtime.onMessage.addListener(function (mes, sender, sendResponse) {
-        console.log(mes);
         if (mes.type === 'capture/start') {
-            console.log(getDimension());
             sendResponse(getDimension());
         }
     });
@@ -31,6 +29,4 @@ var chrome = chrome || {};
             height: Math.min(parseInt(580 * (gw / 960), 10), wih)
         };
     }
-
-    console.log(getDimension());
 }());
