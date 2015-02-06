@@ -42,7 +42,7 @@ Date.prototype.isValid = function () {
 // ゆーてれてーかんすー
 TourabuEx.util = {};
 
-// getToukenRanbuTab Deferred <string>
+// getToukenRanbuTab Deferred <tab>
 TourabuEx.util.getToukenRanbuTab = function () {
     var d = $.Deferred(),
         isToukenRanbuUrl = function (u) {
@@ -62,7 +62,7 @@ TourabuEx.util.getToukenRanbuTab = function () {
                         // 刀剣乱舞のたぶみつけた
                         if (isToukenRanbuUrl(tab.url)) {
                             console.log('touranTab found', tab.url);
-                            d.resolve(tab.id);
+                            d.resolve(tab);
                         } else if (i === l - 1 && j === k - 1) {
                             d.reject();
                         }
@@ -75,8 +75,8 @@ TourabuEx.util.getToukenRanbuTab = function () {
 };
 
 TourabuEx.util.focusToukenRanbuTab = function () {
-    TourabuEx.util.getToukenRanbuTab().done(function (tabId) {
-        chrome.tabs.update(tabId, {active: true});
+    TourabuEx.util.getToukenRanbuTab().done(function (tab) {
+        chrome.tabs.update(tab.id, {active: true});
     }).fail(function () {
         chrome.tabs.create({url: 'http://www.dmm.com/netgame/social/-/gadgets/=/app_id=825012/'});
     });
