@@ -42,7 +42,7 @@ Date.prototype.isValid = function () {
 // ゆーてれてーかんすー
 TourabuEx.util = {};
 
-// getToukenRanbuTab Deferred <string>
+// getToukenRanbuTab Deferred <tab>
 TourabuEx.util.getToukenRanbuTab = function () {
     var d = $.Deferred(),
         isToukenRanbuUrl = function (u) {
