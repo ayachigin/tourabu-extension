@@ -21,9 +21,24 @@ TourabuEx.Dispatcher = (function () {
 
         startListeningRequest();
         startTimer();
+        startListeningMessage();
         return this;
     }
 
+    function startListeningMessage() {
+        chrome.runtime.onMessage.addListener(function (message,
+                                                       sender,
+                                                       sendResponse) {
+            if (!message.type) return ;
+
+            TourabuEx.events.trigger('message/' + message.type, {
+                message:      message.body,
+                sender:       sender,
+                sendResponse: sendResponse
+            });
+        });
+    }
+    
     function startListeningRequest() {
         chrome.webRequest.onBeforeRequest.addListener(
             onBeforeRequest,
