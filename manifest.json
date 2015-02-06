@@ -16,6 +16,7 @@
             "src/js/notifier.js",
             "src/js/timer.js",
             "src/js/conquest.js",
+            "src/js/duty.js",
             "src/js/Dispatcher.js",
             "src/js/repair.js",
             "src/js/main.js"]
