@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "とうらぶえくすてんしょん",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "DMMのブラウザゲーム「刀剣乱舞」をちょっと遊びやすくする拡張機能です",
     "minimum_chrome_version": "38",
 
