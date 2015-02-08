@@ -3,8 +3,6 @@ var TourabuEx = TourabuEx || {},
 
 TourabuEx.Timer = (function () {
 
-    new Timer();
-    
     function Timer() {
         // new つけ忘れたらつけて返す
         if (!(this instanceof Timer)) {
@@ -116,5 +114,7 @@ TourabuEx.Timer = (function () {
         });
     };
 
+    new Timer();
+    
     return Timer;
 }());
