@@ -1,4 +1,8 @@
-describe("events", function() {
+/*global describe, it, expect, TourabuEx */
+
+describe('events', function() {
+    'use strict';
+    
     var e = TourabuEx.events;
 
     function bind(o) {
@@ -7,7 +11,7 @@ describe("events", function() {
         });
     }
 
-    it("binds and trigger an event", function() {
+    it('binds and trigger an event', function() {
         var o = {hoge: 'hoga'};
         bind(o);
         e.trigger('my/event', o);

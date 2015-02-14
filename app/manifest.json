@@ -1,0 +1,57 @@
+{
+    "name": "とうらぶえくすてんしょん",
+    "version": "0.2.2",
+    "manifest_version": 2,
+    "description": "DMMのブラウザゲーム「刀剣乱舞」をちょっと遊びやすくする拡張機能です",
+    "icons": {
+        "16": "images/icon_16.png",
+        "128": "images/icon_128.png"
+    },
+    "background": {
+        "persistent" : true,
+        "scripts": [
+            "scripts/chromereload.js",
+            "libs/jquery.min.js",
+            "scripts/TourabuEx.js",
+            "scripts/util.js",
+            "scripts/events.js",
+            "scripts/storage.js",
+            "scripts/notifier.js",
+            "scripts/timer.js",
+            "scripts/conquest.js",
+            "scripts/duty.js",
+            "scripts/capture.js",
+            "scripts/Dispatcher.js",
+            "scripts/repair.js",
+            "scripts/widget.js",
+            "scripts/main.js"]
+    },
+    "browser_action": {
+        "default_icon": {
+            "19": "images/icon-19.png",
+            "38": "images/icon-38.png"
+        },
+        "default_title": "testext",
+        "default_popup": "popup.html"
+    },
+    "options_page": "options.html",
+    "content_scripts": [
+        {
+            "matches": ["*://www.dmm.com/netgame/social/-/gadgets/=/app_id=825012/"],
+            "js": ["libs/jquery.min.js",
+                   "scripts/tourabu_content.js",
+                   "scripts/resize_widget.js"]
+        }
+    ],
+
+    "author": "ayachi gin<ayachigin@gmail.com",
+
+    "permissions": [
+        "tabs",
+        "storage",
+        "notifications",
+        "downloads",
+        "webRequest",
+        "<all_urls>"
+    ]
+}

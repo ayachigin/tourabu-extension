@@ -1,9 +1,11 @@
+/*global describe, it, expect */
+
 describe('Utility functions', function () {
-    var util = TourabuEx.util;
+    'use strict';
 
     it ('Should be true when a is prefix of b', function () {
-        expect("hoge".isPrefixOf("hogefuga")).toBeTruthy();
-        expect("hoge".isPrefixOf("hoge")).toBeTruthy();
+        expect('hoge'.isPrefixOf('hogefuga')).toBeTruthy();
+        expect('hoge'.isPrefixOf('hoge')).toBeTruthy();
     });
 
     it ('Should be false when a is not prefix of b', function () {

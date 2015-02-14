@@ -1,4 +1,7 @@
+/*global describe, it, expect, TourabuEx, beforeEach */
+
 describe('notifier', function () {
+    'use strict';
     var n = TourabuEx.Notifier;
     beforeEach(function (done) {
         var ps = n.defaultParam();
