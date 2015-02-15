@@ -16,6 +16,7 @@
             "scripts/util.js",
             "scripts/events.js",
             "scripts/storage.js",
+            "scripts/config.js",
             "scripts/notifier.js",
             "scripts/timer.js",
             "scripts/conquest.js",
