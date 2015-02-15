@@ -15,21 +15,19 @@ var TourabuEx = TourabuEx || {};
         DEFAULT_SETTING = function () {
             return {
                 'setting': {
-                    'notification': {}
-                }
+                 }
             };
         };
 
     function initialize() {
         storage.get('setting', function (s) {
             // 通知関係
-            var notification = s.notification,
-                k, i, l, os;
+            var k, i, l, os;
 
             // 保存されてた設定を反映
-            for (k in notification) {
-                if (notification.hasOwnProperty(k)) {
-                    document.querySelector('#' + k).value = notification[k];
+            for (k in s) {
+                if (s.hasOwnProperty(k)) {
+                    document.querySelector('#' + k).value = s[k];
                 }
             }
 
@@ -44,7 +42,7 @@ var TourabuEx = TourabuEx || {};
             i, l = selects.length;
 
         for (i = 0; i < l; i++) {
-            s.setting.notification[selects[i].id] = selects[i].value;
+            s.setting[selects[i].id] = selects[i].value;
         }
 
         storage.set(s);
