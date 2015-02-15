@@ -1,3 +1,4 @@
+/*global $ */
 var TourabuEx = TourabuEx || {},
     chrome = chrome || {};
 
@@ -9,31 +10,32 @@ var TourabuEx = TourabuEx || {},
     
     function widgetProcess () {
         $(document).ready(function () {
-            var gameFrame = document.querySelector('#game_frame'),
-                top = gameFrame.offsetTop,
-                left = gameFrame.offsetLeft,
-                width = GAME_WIDTH,
+            var width = GAME_WIDTH,
                 height = GAME_HEIGHT;
 
             $(document.body).css({'overflow': 'hidden'});
-            resizeAndScroll(left, top, width, height);
+            resizeAndScroll(width, height);
             onresized(function () {});
         });
     }
 
-    function resizeAndScroll(left, top, width, height) {
+    function resizeAndScroll(width, height) {
+        console.log(width, height);
         resize(width, height);
-        scroll(left, top);
+        scroll();
     }
-
-    function scroll(left, top) {
+    
+    function scroll() {
+        var gameFrame = document.querySelector('#game_frame'),
+            top = gameFrame.offsetTop,
+            left = gameFrame.offsetLeft;
+                
         window.scrollTo(left, top);
     }
 
-    function resize(height, width) {
+    function resize(width, height) {
         var outerWidth  = window.outerWidth - window.innerWidth + width,
             outerHeight = window.outerHeight - window.innerHeight + height;
-
         window.resizeTo(outerWidth, outerHeight);
     }
 
@@ -50,6 +52,14 @@ var TourabuEx = TourabuEx || {},
         if (mes === 'mode/widget') {
             console.log('widget-mode');
             widgetProcess();
+            return;
+        }
+
+        if (mes.type === 'zoom/change') {
+            console.log('zoom', mes);
+            var width  = parseInt(GAME_WIDTH * mes.scale, 10),
+                height = parseInt(GAME_HEIGHT * mes.scale, 10);
+            resizeAndScroll(GAME_WIDTH, GAME_HEIGHT);
         }
     });
 }());

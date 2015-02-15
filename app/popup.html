@@ -1,30 +1,57 @@
 <!doctype html>
-<link rel="stylesheet" href="popup.css" type="text/css" media="screen" />
-<body>
-  <h1 class="fade-in">とうらぶ！</h1>
-  <form id="setting">
-    <dl id="notification">
-      <dt><label>通知の表示</label></dt>
-      <dd>
-        <select id="notification-type">
-          <option selected value="start-end">開始時と終了時</option>
-          <option value="start">開始時のみ</option>
-          <option value="end">終了時のみ</option>
-          <option value="disable">無効</option>
-        </select>
-      </dd>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>とうらぶえくすてんしょん</title>
+        <link rel="stylesheet" href="styles/popup.css" type="text/css" media="screen" />
+    </head>
+    <body>
+        <h1 class="fade-in">とうらぶ！</h1>
+        <h2>設定</h2>
+        <form id="setting">
+            <dl id="notification">
 
-      <dt><label>通知を自動で閉じる</label></dt>
-      <dd>
-        <select id="notification-autohide">
-          <option value="start-end">常に閉じる</option>
-          <option selected value="start">開始時のみ</option>
-          <option value="never">自動で閉じない</option>
-        </select>
-      </dd>
-    </dl>
-  </form>
-  <script src="../js/util.js"></script>
-  <script src="../js/storage.js"></script>
-  <script src="setting.js"></script>
-</body>
+                <dt><label for="notification-type">通知の表示</label></dt>
+                <dd>
+                    <select id="notification-type" tabindex="0">
+                        <option selected value="start-end">開始時と終了時</option>
+                        <option value="start">開始時のみ</option>
+                        <option value="end">終了時のみ</option>
+                        <option value="disable">無効</option>
+                    </select>
+                </dd>
+
+                <dt><label for="notification-autohide">通知を自動で閉じる</label></dt>
+                <dd>
+                    <select id="notification-autohide" tabindex="1">
+                        <option value="start-end">常に閉じる</option>
+                        <option selected value="start">開始時のみ</option>
+                        <option value="never">自動で閉じない</option>
+                    </select>
+                </dd>
+
+                <!--
+                <dt><label for="notification-sound">通知音を鳴らす</label></dt>
+                <dd>
+                    <select id="notification-sound" tabindex="2">
+                        <option value="start-end">常に鳴らす</option>
+                        <option value="start">開始時のみ</option>
+                        <option selected value="start">終了時のみ</option>
+                        <option value="never">鳴らさない</option>
+                    </select>
+                </dd>
+                -->
+            </dl>
+        </form>
+
+        <h2>ツール</h2>
+        <button id="start-widget" title="別窓で起動"><img src="images/widget_38.png" /></button>
+        <button id="screenshot" title="スクリーンショット"><img src="images/camera_38.png" /></button>
+
+        <script src="libs/jquery.min.js"></script>
+        <script src="scripts/util.js"></script>
+        <script src="scripts/events.js"></script>
+        <script src="scripts/storage.js"></script>
+        <script src="scripts/popup.js"></script>
+    </body>
+</html>

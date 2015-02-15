@@ -8,7 +8,7 @@
         "128": "images/icon_128.png"
     },
     "background": {
-        "persistent" : true,
+        "persistent": true,
         "scripts": [
             "scripts/chromereload.js",
             "libs/jquery.min.js",
@@ -16,6 +16,7 @@
             "scripts/util.js",
             "scripts/events.js",
             "scripts/storage.js",
+            "scripts/config.js",
             "scripts/notifier.js",
             "scripts/timer.js",
             "scripts/conquest.js",
@@ -24,28 +25,30 @@
             "scripts/Dispatcher.js",
             "scripts/repair.js",
             "scripts/widget.js",
-            "scripts/main.js"]
+            "scripts/main.js"
+        ]
     },
     "browser_action": {
         "default_icon": {
-            "19": "images/icon-19.png",
-            "38": "images/icon-38.png"
+            "19": "images/icon_19.png",
+            "38": "images/icon_38.png"
         },
-        "default_title": "testext",
+        "default_title": "とうらぶえくすてんしょん",
         "default_popup": "popup.html"
     },
-    "options_page": "options.html",
     "content_scripts": [
         {
-            "matches": ["*://www.dmm.com/netgame/social/-/gadgets/=/app_id=825012/"],
-            "js": ["libs/jquery.min.js",
-                   "scripts/tourabu_content.js",
-                   "scripts/resize_widget.js"]
+            "matches": [
+                "*://www.dmm.com/netgame/social/-/gadgets/=/app_id=825012/"
+            ],
+            "js": [
+                "libs/jquery.min.js",
+                "scripts/tourabu_content.js",
+                "scripts/resize_widget.js"
+            ]
         }
     ],
-
     "author": "ayachi gin<ayachigin@gmail.com",
-
     "permissions": [
         "tabs",
         "storage",

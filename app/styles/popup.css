@@ -5,19 +5,19 @@ html, body {
 }
 
 body {
-    background-color: #f0f0f0;
+    background-color: #fff;
     padding: 10px;
-    color: #333;
-    text-shadow: 1px 1px 1px #000;
+    color: #000;
+    text-shadow: 1px 1px 1px #333;
 }
 
-dt {
+form dt {
     float:left;
     display: block;
     width 120px;
 }
 
-dd {
+form dd {
     display: block;
     margin-left: 130px;
 }

@@ -3,12 +3,13 @@ var TourabuEx = TourabuEx || {};
 (function () {
     'use strict';
 
-    function notify(body, timeout) {
+    function notify(body, timeout, status) {
         var notifierParam = TourabuEx.Notifier.defaultParam();
 
-        notifierParam.icon = 'assets/duty_48.png';
+        notifierParam.icon = 'images/duty_48.png';
         notifierParam.body = body;
         notifierParam.timeout = timeout || 0;
+        notifierParam.status = status;
         TourabuEx.Notifier(notifierParam);
     }
 
@@ -22,12 +23,12 @@ var TourabuEx = TourabuEx || {};
         timer.set(timerParam);
 
         // notify
-        notify('内番を開始しました', 5000);
+        notify('内番を開始しました', 5000, 'start');
         console.log('duty/start', o);
     });
 
     TourabuEx.events.bind('timer/duty/end', function () {
-        notify('内番が終了しました', 5000);
+        notify('内番が終了しました', 5000, 'end');
     });
 
 }());
