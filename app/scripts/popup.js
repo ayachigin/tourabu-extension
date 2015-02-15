@@ -10,7 +10,8 @@ var TourabuEx = TourabuEx || {};
  config.jsはストレージの変更を監視する
  */
 (function () {
-    var setting = document.querySelector('#setting'),
+    var storage = TourabuEx.storage,
+        setting = document.querySelector('#setting'),
         DEFAULT_SETTING = function () {
             return {
                 'setting': {
@@ -38,8 +39,6 @@ var TourabuEx = TourabuEx || {};
     window.addEventListener('load', initialize);
 
     setting.addEventListener('change', function (e) {
-        console.dir(storage);
-
         var selects = document.querySelectorAll('#notification select'),
             s = DEFAULT_SETTING(),
             i, l = selects.length;
