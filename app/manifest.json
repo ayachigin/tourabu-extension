@@ -28,10 +28,10 @@
     },
     "browser_action": {
         "default_icon": {
-            "19": "images/icon-19.png",
-            "38": "images/icon-38.png"
+            "19": "images/icon_19.png",
+            "38": "images/icon_38.png"
         },
-        "default_title": "testext",
+        "default_title": "とうらぶえくすてんしょん",
         "default_popup": "popup.html"
     },
     "options_page": "options.html",
