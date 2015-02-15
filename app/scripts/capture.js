@@ -17,13 +17,22 @@ var TourabuEx = TourabuEx || {},
         });
     });
 
-    TourabuEx.events.bind('message/capture/start', function () {
-        if (!targetTab) { return; }
-
-        chrome.tabs.captureVisibleTab(targetTab.windowId, {format: 'png'}, function (dataurl) {
-            getDimension(targetTab).done(function (dimension) {
-                downloadImage(trimImage(dataurl, dimension));
+    function capture(tab) {
+        console.log(tab);
+        chrome.tabs.captureVisibleTab(tab.windowId, {format: 'png'}, function (dataurl) {
+            getDimension(tab).done(function (dimension) {
+                if (dimension) {
+                    downloadImage(trimImage(dataurl, dimension));
+                } else {
+                    downloadImage(dataurl);
+                }
             });
+        });
+    }
+
+    TourabuEx.events.bind('message/capture/start', function () {
+        TourabuEx.util.getToukenRanbuTab().done(function(tab) {
+            capture(tab);
         });
     });
 
@@ -34,14 +43,6 @@ var TourabuEx = TourabuEx || {},
 
         chrome.downloads.download({url: dataurl,
                                    filename: filename});
-    }
-
-    function capture(tab) {
-        var dfd = $.Deferred();
-        chrome.tabs.captureVisibleTab(tab.windowId, {format: 'png'}, function (dataurl) {
-            dfd.resolve(dataurl);
-        });
-        return dfd;
     }
 
     function getDimension(tab) {
