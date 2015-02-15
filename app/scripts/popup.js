@@ -1,7 +1,7 @@
-/*global  */
+/*global chrome, $ */
 'use strict';
 
-var storage = storage || {};
+var TourabuEx = TourabuEx || {};
 
 /*
  Applies the config value read from the local storage in a popup.html at startup.
@@ -49,5 +49,18 @@ var storage = storage || {};
         }
 
         storage.set(s);
+    });
+
+    document.querySelector('#screenshot').addEventListener('click', function () {
+        console.log('shot');
+        chrome.runtime.sendMessage({type: 'capture/start'});
+    });
+
+    $('#screenshot').hide();
+
+    chrome.runtime.onMessage.addListener(function(mes, sender) {
+        if (mes.type === 'content/load') {
+            $('#screenshot').show();
+        }
     });
 }());

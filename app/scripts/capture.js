@@ -3,15 +3,19 @@ var TourabuEx = TourabuEx || {},
 
 (function () {
     'use strict';
+    var targetTab = null;
 
     TourabuEx.events.bind('message/content/load', function (e, mes) {
         console.log('message/content/load');
-        chrome.pageAction.show(mes.sender.tab.id);
+        targetTab = mes.sender.tab;
     });
 
-    chrome.pageAction.onClicked.addListener(function (tab) {
-        chrome.tabs.captureVisibleTab(tab.windowId, {format: 'png'}, function (dataurl) {
-            getDimension(tab).done(function (dimension) {
+
+    TourabuEx.events.bind('message/capture/start', function () {
+        if (!targetTab) { return; }
+
+        chrome.tabs.captureVisibleTab(targetTab.windowId, {format: 'png'}, function (dataurl) {
+            getDimension(targetTab).done(function (dimension) {
                 downloadImage(trimImage(dataurl, dimension));
             });
         });
