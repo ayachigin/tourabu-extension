@@ -12,12 +12,12 @@ TourabuEx.config = (function () {
     });
 
     TourabuEx.storage.get('setting', function(s) {
-        setting = s;  
+        setting = s;
     });
     
     config.get = function (k) {
         return setting[k];
     };
-       
+
     return config;
 }());
