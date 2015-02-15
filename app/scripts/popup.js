@@ -55,11 +55,20 @@ var TourabuEx = TourabuEx || {};
         chrome.runtime.sendMessage({type: 'capture/start'});
     });
 
+    // screen shot hogehoge
     $('#screenshot').hide();
 
+    chrome.runtime.sendMessage({type: 'popup/show'});
+    
     chrome.runtime.onMessage.addListener(function(mes, sender) {
         if (mes.type === 'content/load') {
             $('#screenshot').show();
         }
+
+        if (mes.type === 'capture/enable') {
+            $('#screenshot').show();
+        }
     });
+
+    console.log('called/popup');
 }());

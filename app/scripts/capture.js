@@ -10,6 +10,12 @@ var TourabuEx = TourabuEx || {},
         targetTab = mes.sender.tab;
     });
 
+    TourabuEx.events.bind('message/popup/show', function (e, mes) {
+        console.log('popup/show');
+        TourabuEx.util.getToukenRanbuTab().done(function () {
+            chrome.runtime.sendMessage({type: 'capture/enable'});
+        });
+    });
 
     TourabuEx.events.bind('message/capture/start', function () {
         if (!targetTab) { return; }
