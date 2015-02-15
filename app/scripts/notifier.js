@@ -38,7 +38,7 @@ TourabuEx.Notifier.defaultParam = function () {
         timeout: 0,
         onClicked: function () {
             console.log('notification/clicked');
-            TourabuEx.util.focusToukenRanbuTab();
+            TourabuEx.util.focusOrStartTourabu();
         },
         onError:   function () { console.log('notification/error'); }
     };

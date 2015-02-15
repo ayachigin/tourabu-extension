@@ -16,6 +16,10 @@ var TourabuEx = TourabuEx || {},
         });
     });
 
+    TourabuEx.events.bind('message/start/widget', function () {
+        TourabuEx.util.focusOrStartTourabu();
+    });
+
     chrome.tabs.onZoomChange.addListener(function (o) {
         if (widgetTab && widgetTab.id === o.tabId) {
             chrome.tabs.sendMessage(widgetTab.id, {type: 'zoom/change',

@@ -44,12 +44,16 @@ Date.prototype.isValid = function () {
 // ゆーてれてーかんすー
 TourabuEx.util = {};
 
+TourabuEx.util.GAME_URL = function () {
+    return 'http://www.dmm.com/netgame/' +
+        'social/-/gadgets/=/app_id=825012/';
+};
+
 // getToukenRanbuTab Deferred <tab>
 TourabuEx.util.getToukenRanbuTab = function () {
     var d = $.Deferred(),
         isToukenRanbuUrl = function (u) {
-            return ('://www.dmm.com/netgame/social/-/gadgets/=/' +
-                    'app_id=825012/').isInfixOf(u);
+            return (TourabuEx.util.GAME_URL()).isInfixOf(u);
         };
 
     function findTourabuTab(wid, i, l) {
@@ -79,11 +83,25 @@ TourabuEx.util.getToukenRanbuTab = function () {
     return d;
 };
 
+TourabuEx.util.focusOrStartTourabu = function () {
+    TourabuEx.util.getToukenRanbuTab().done(function (tab) {
+        TourabuEx.util.focusToukenRanbuTab();
+    }).fail(function () {
+        TourabuEx.util.startTourabuWidget();
+    });
+};
+
+TourabuEx.util.startTourabuWidget = function () {
+    chrome.windows.create({'url': TourabuEx.util.GAME_URL(),
+                           'type': 'popup'});
+};
+
 TourabuEx.util.focusToukenRanbuTab = function () {
     TourabuEx.util.getToukenRanbuTab().done(function (tab) {
+        chrome.windows.update(tab.windowId, {focused: true});
         chrome.tabs.update(tab.id, {active: true});
     }).fail(function () {
-        chrome.tabs.create({url: 'http://www.dmm.com/netgame/social/-/gadgets/=/app_id=825012/'});
+        chrome.tabs.create({url: TourabuEx.util.GAME_URL()});
     });
 };
 

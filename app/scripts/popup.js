@@ -70,5 +70,8 @@ var TourabuEx = TourabuEx || {};
         }
     });
 
-    console.log('called/popup');
+    // widget mode
+    $('#start-widget').click(function () {
+        chrome.runtime.sendMessage({type: 'start/widget'});
+    });
 }());
