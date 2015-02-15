@@ -6,7 +6,7 @@ var TourabuEx = TourabuEx || {};
     function notify(body, timeout) {
         var notifierParam = TourabuEx.Notifier.defaultParam();
 
-        notifierParam.icon = 'assets/duty_48.png';
+        notifierParam.icon = 'images/duty_48.png';
         notifierParam.body = body;
         notifierParam.timeout = timeout || 0;
         TourabuEx.Notifier(notifierParam);

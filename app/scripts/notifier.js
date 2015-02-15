@@ -32,7 +32,7 @@ TourabuEx.Notifier.defaultParam = function () {
     'use strict';
 
     return {
-        icon: 'assets/icon_touken_128.png',
+        icon: 'images/icon_touken_128.png',
         title: 'とうらぶえくすてんしょん',
         body: '',
         timeout: 0,

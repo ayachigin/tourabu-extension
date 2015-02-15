@@ -47,7 +47,7 @@ var TourabuEx = TourabuEx || {};
                     timerParam = timer.defaultParam();
 
                 notifyparam.timeout = 5000;
-                notifyparam.icon = 'assets/conquest_48.png';
+                notifyparam.icon = 'images/conquest_48.png';
                 notifyparam.body  = '第' + body.party_no +
                     '部隊が遠征に出発しました\n' +
                     (parseInt(v / 1000 / 60, 10)) +
@@ -73,7 +73,7 @@ var TourabuEx = TourabuEx || {};
         window.console.dir(param);
 
         notificationParams.body = '部隊' + param.party_no + 'が遠征から帰還しました';
-        notificationParams.icon = 'assets/conquest_48.png';
+        notificationParams.icon = 'images/conquest_48.png';
         TourabuEx.Notifier(notificationParams);
     });
 
