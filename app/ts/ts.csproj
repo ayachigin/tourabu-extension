@@ -21,6 +21,7 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="config.ts" />
     <TypeScriptCompile Include="events.ts" />
     <TypeScriptCompile Include="Scripts\typings\chrome\chrome-app.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\chrome\chrome.d.ts" />
