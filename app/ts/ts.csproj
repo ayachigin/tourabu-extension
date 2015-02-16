@@ -29,6 +29,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\webrtc\MediaStream.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\webrtc\RTCPeerConnection.d.ts" />
+    <TypeScriptCompile Include="storage.ts" />
     <TypeScriptCompile Include="TourabuEx.ts" />
     <TypeScriptCompile Include="util.ts" />
   </ItemGroup>
