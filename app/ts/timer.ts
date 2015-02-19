@@ -47,7 +47,7 @@ module TourabuEx.timer {
     }
 
     function loadTimers() {
-        TourabuEx.storage.get('timer_task', function (tasks: TimerTaskToSave[]) {
+        TourabuEx.storage.get('timer_tasks', function (tasks: TimerTaskToSave[]) {
             tasks.forEach((task) => {
                 var d = new Date(task.end);
                 if (TourabuEx.util.isValid(d)) {
@@ -62,15 +62,21 @@ module TourabuEx.timer {
     }
 
     function checkTimers() {
-        var now = new Date();
+        var now = new Date(),
+            anyTimersFinished = false;
         timers = timers.filter((task) => {
             var ended = task.end < now;
-
-            TourabuEx.events.trigger('timer/' + task.type + '/end', task.callbackParam);
-
-            return ended;
+            if (ended) {
+                TourabuEx.events.trigger('timer/' + task.type + '/end', task.callbackParam);
+                anyTimersFinished = true;
+                return false;
+            } else {
+                return true;
+            }
         });
-        saveTimers();
+        if (anyTimersFinished) {
+            saveTimers();
+        }
     }
 
     function initialize() {
