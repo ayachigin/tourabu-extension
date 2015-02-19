@@ -15,7 +15,7 @@ module TourabuEx.conquest {
         party_no: string;
     }
 
-    const CONQUEST_ICON = 'images/conquest_48.png';
+    var CONQUEST_ICON = 'images/conquest_48.png';
 
     var timetable: TimeTable = {
         '0': 10000,

@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 module TourabuEx.duty {
-    const DUTY_ICON = 'images/duty_48.png';
+    var DUTY_ICON = 'images/duty_48.png';
 
     function notify(body, status) {
         var p: notifier.Param;

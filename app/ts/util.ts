@@ -39,7 +39,7 @@ module TourabuEx.util {
         return d.toString() !== 'Invalid Date';
     }
 
-    export const GAME_URL = 'http://www.dmm.com/netgame/social/-/gadgets/=/app_id=825012/';
+    export var GAME_URL = 'http://www.dmm.com/netgame/social/-/gadgets/=/app_id=825012/';
 
     function findTourabuTab(d, wid: number, i: number, l: number): void {
         chrome.tabs.query({ windowId: wid }, function (tabs) {
