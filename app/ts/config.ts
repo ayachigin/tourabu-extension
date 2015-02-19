@@ -9,7 +9,7 @@ interface Setting {
 module TourabuEx.config {
     var setting: Setting;
 
-    TourabuEx.events.bind('storage/change', function (_, o) {
+    TourabuEx.events.bind('storage/change', (_, o: any) => {
         if (!o.setting) { return; }
 
         setting = o.setting.newValue;

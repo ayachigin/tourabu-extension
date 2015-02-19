@@ -4,7 +4,13 @@
 module TourabuEx.events {
 
     export interface Bind {
-        (eventType: string, handler: (e: JQueryEventObject, a: any) => any): any;
+        (e: 'conquest/start', h: (ev: JQueryEventObject, r: RequestBody) => void);
+        (e: 'conquest/cancel', h: (ev: JQueryEventObject, r: RequestBody) => void);
+        (e: 'timer/conquest/end', h: (ev: JQueryEventObject, r: conquest.Param) => void);
+        (e: 'duty/start', h: (ev: JQueryEventObject, r: RequestBody) => void);
+        (e: 'message', h: (ev: JQueryEventObject, r: ReceivedMessage) => void);
+        (e: string, h: (ev: JQueryEventObject, r: ReceivedMessage) => void);
+        (e: string, handler: (ev: JQueryEventObject, a: any) => any);
     }
 
     export var bind: Bind = function bind(eventType, f) {
@@ -20,7 +26,7 @@ module TourabuEx.events {
     }
 
     export interface Trigger {
-        (eventType: string, any): any;
+        (e: string, any);
     }
 
     export var trigger: Trigger = function (eventType, o) {

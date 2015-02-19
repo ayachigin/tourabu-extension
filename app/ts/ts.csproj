@@ -21,8 +21,13 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="capture.ts" />
     <TypeScriptCompile Include="config.ts" />
+    <TypeScriptCompile Include="conquest.ts" />
+    <TypeScriptCompile Include="Dispatcher.ts" />
+    <TypeScriptCompile Include="duty.ts" />
     <TypeScriptCompile Include="events.ts" />
+    <TypeScriptCompile Include="notifier.ts" />
     <TypeScriptCompile Include="Scripts\typings\chrome\chrome-app.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\chrome\chrome.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\filesystem\filesystem.d.ts" />
@@ -31,6 +36,7 @@
     <TypeScriptCompile Include="Scripts\typings\webrtc\MediaStream.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\webrtc\RTCPeerConnection.d.ts" />
     <TypeScriptCompile Include="storage.ts" />
+    <TypeScriptCompile Include="timer.ts" />
     <TypeScriptCompile Include="TourabuEx.ts" />
     <TypeScriptCompile Include="util.ts" />
   </ItemGroup>

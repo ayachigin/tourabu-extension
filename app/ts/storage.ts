@@ -1,4 +1,5 @@
 ﻿/// <reference path="tourabuex.ts" />
+'use strict';
 
 module TourabuEx.storage {
     var storageArea = chrome.storage.sync || chrome.storage.local;
