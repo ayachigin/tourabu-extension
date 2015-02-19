@@ -1,4 +1,5 @@
 ﻿/// <reference path="scripts/typings/chrome/chrome.d.ts" />
+/*global Notification */
 'use strict';
 
 class Student {
@@ -62,7 +63,7 @@ module TourabuEx.notifier {
         var n = new Notification(param.title, { icon: param.icon, body: param.body })
 
         n.onshow = function () {
-            if (!(param.timeout === 0)) {
+            if (param.timeout !== 0) {
                 setTimeout(function () {
                     n.close();
                 }, param.timeout);
