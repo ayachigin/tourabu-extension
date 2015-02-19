@@ -1,4 +1,6 @@
-﻿module Tourabu.widget {
+﻿'use strict';
+
+module TourabuEx.widget {
     var widgetTab = null;
 
     TourabuEx.events.bind('message/content/load', function (_, mes) {
@@ -13,6 +15,7 @@
     });
 
     TourabuEx.events.bind('message/start/widget', function () {
+        console.log('message/widget/start');
         TourabuEx.util.startTourabuWidget();
     });
 
