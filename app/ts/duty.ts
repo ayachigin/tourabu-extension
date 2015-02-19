@@ -5,9 +5,12 @@ module TourabuEx.duty {
 
     function notify(body, status) {
         var p: notifier.Param;
-        p.body = body;
-        p.icon = DUTY_ICON;
-        p.status = status;
+
+        p = {
+            body: body,
+            icon: DUTY_ICON,
+            status: status,
+        }
 
         notifier.set(p);
     }

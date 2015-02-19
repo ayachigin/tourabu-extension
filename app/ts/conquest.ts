@@ -42,10 +42,11 @@ module TourabuEx.conquest {
     };
 
     function notify(body: string, status: string) {
-        var p: TourabuEx.notifier.Param;
-        p.body = body;
-        p.status = status;
-        p.icon = CONQUEST_ICON;
+        var p: TourabuEx.notifier.Param = {
+            body: body,
+            status: status,
+            icon: CONQUEST_ICON
+        }
         TourabuEx.notifier.set(p);
     }
 
@@ -62,11 +63,11 @@ module TourabuEx.conquest {
                 party_no: rbody.party_no[0],
                 field_id: rbody.field_id[0]
             },
-            task: TourabuEx.timer.TimerTask;
-
-        task.end = d;
-        task.type = 'conquest';
-        task.callbackParam = cparam;
+            task: TourabuEx.timer.TimerTask = {
+                end: d,
+                type: 'conquest',
+                callbackParam: cparam
+            }
         TourabuEx.timer.set(task);
 
         var body = '第' + cparam.party_no +
@@ -84,6 +85,7 @@ module TourabuEx.conquest {
         var body = <{ party_no: string[] }>rparam.body;
         console.log('timer/cancel', body.party_no[0]);
         TourabuEx.timer.cancel((task) => {
+            console.log('cancel', task, body);
             var param = <Param> task.callbackParam;
             return param.party_no === body.party_no[0];
         });

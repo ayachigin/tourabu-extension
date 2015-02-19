@@ -21,7 +21,7 @@ module TourabuEx {
 
     export class Dispatcher {
         constructor() {
-            if (d) return d;
+            if (d) { return d; }
 
             d = this;
         }
@@ -45,7 +45,7 @@ module TourabuEx {
         startListeningRequest() {
             chrome.webRequest.onBeforeRequest.addListener(
                 (r) => {
-                    if (r.method === 'GET') return {};
+                    if (r.method === 'GET') { return {}; }
                     
                     // http://w003.touken-ranbu.jp/mission/index の mission/index の部分
                     var eventType = r.url.split('/').slice(3).join('/'),
