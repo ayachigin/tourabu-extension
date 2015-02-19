@@ -5,6 +5,7 @@ dist
 .sass-cache
 app/bower_components
 test/bower_components
+app/scripts
 package
 
 ## Ignore Visual Studio temporary files, build results, and
