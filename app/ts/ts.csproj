@@ -27,7 +27,10 @@
     <TypeScriptCompile Include="Dispatcher.ts" />
     <TypeScriptCompile Include="duty.ts" />
     <TypeScriptCompile Include="events.ts" />
+    <TypeScriptCompile Include="main.ts" />
     <TypeScriptCompile Include="notifier.ts" />
+    <TypeScriptCompile Include="popup.ts" />
+    <TypeScriptCompile Include="resize_widget.ts" />
     <TypeScriptCompile Include="Scripts\typings\chrome\chrome-app.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\chrome\chrome.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\filesystem\filesystem.d.ts" />
@@ -38,7 +41,9 @@
     <TypeScriptCompile Include="storage.ts" />
     <TypeScriptCompile Include="timer.ts" />
     <TypeScriptCompile Include="TourabuEx.ts" />
+    <TypeScriptCompile Include="tourabu_content.ts" />
     <TypeScriptCompile Include="util.ts" />
+    <TypeScriptCompile Include="widget.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -78,9 +83,9 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
-    <TypeScriptOutDir>C:\gnupack_devel-11.00\home\projects\javascript\tourabuex\app\ts\js</TypeScriptOutDir>
-    <TypeScriptGeneratesDeclarations>True</TypeScriptGeneratesDeclarations>
-    <TypeScriptTarget>ES6</TypeScriptTarget>
+    <TypeScriptOutDir>C:\gnupack_devel-11.00\home\projects\javascript\tourabuex\app\scripts</TypeScriptOutDir>
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
