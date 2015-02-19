@@ -2,7 +2,7 @@
  
 module TourabuEx.capture {
 
-    interface Dimension {
+    export interface Dimension {
         x: number;
         y: number;
         width: number;
@@ -20,6 +20,12 @@ module TourabuEx.capture {
         })
     });
 
+    events.bind('message/capture/start',() => {
+        TourabuEx.util.getToukenranbuTab().done((tab) => {
+            capture(tab);
+        });
+    });
+
     function capture(tab: chrome.tabs.Tab) {
         chrome.tabs.captureVisibleTab(tab.windowId, { format: 'png' },(dataUrl) => {
             getDimension(tab).done((dimension) => {
@@ -34,11 +40,15 @@ module TourabuEx.capture {
     function getDimension(tab: chrome.tabs.Tab): JQueryDeferred<Dimension> {
         var dfd = $.Deferred();
         chrome.tabs.sendMessage(tab.id, { type: 'capture/start' },(dimension: Dimension) => {
-            dfd.resolve(dimension);
+            if (dimension) {
+                dfd.resolve(dimension);
+            } else {
+                dfd.reject();
+            }
         })
         setTimeout(() => dfd.reject(), 1000);
         return dfd;
-    };
+    }
 
     function downloadImage(dataUrl: string): void {
         var d = new Date(),
