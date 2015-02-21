@@ -14,6 +14,7 @@
             "libs/jquery.min.js",
             "scripts/TourabuEx.js",
             "scripts/util.js",
+            "scripts/sound.js",
             "scripts/events.js",
             "scripts/storage.js",
             "scripts/config.js",
@@ -23,7 +24,6 @@
             "scripts/duty.js",
             "scripts/capture.js",
             "scripts/Dispatcher.js",
-            "scripts/repair.js",
             "scripts/widget.js",
             "scripts/main.js"
         ]

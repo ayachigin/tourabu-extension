@@ -2,12 +2,10 @@
 /*global Notification */
 'use strict';
 
-class Student {
-    constructor(public name: string, public age: number) {
-    }
-}
-
 module TourabuEx.notifier {
+    var seUrls = [chrome.runtime.getURL('sound/katana.ogg')],
+        seplayer = new TourabuEx.SEPlayer(seUrls);
+
     export interface Param {
         title?: string;
         body?: string;
@@ -63,6 +61,12 @@ module TourabuEx.notifier {
         var n = new Notification(param.title, { icon: param.icon, body: param.body })
 
         n.onshow = function () {
+            var soundConf = TourabuEx.config.get('notification-sound');
+
+            if (soundConf && TourabuEx.util.isInfixOf(param.status, soundConf)) {
+                seplayer.play('katana');
+            }
+
             if (param.timeout !== 0) {
                 setTimeout(function () {
                     n.close();
