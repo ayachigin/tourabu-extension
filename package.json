@@ -1,7 +1,9 @@
 {
-  "name": "testext",
+  "name": "TourabuExtension",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "sinon-chrome": "~0.1.1"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-copy": "~0.5.0",
@@ -23,9 +25,13 @@
     "time-grunt": "~0.3.1",
     "jshint-stylish": "~0.1.5",
     "grunt-chrome-manifest": "~0.2.0",
-    "grunt-contrib-compress": "~0.9.1"
+    "grunt-contrib-compress": "~0.9.1",
+    "sinon-chrome": "~0.1.1"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "grunt test jshint"
   }
 }
