@@ -4,6 +4,10 @@
 module TourabuEx.storage {
     var storageArea = chrome.storage.sync || chrome.storage.local;
 
+    chrome.storage.onChanged.addListener((o, n) => {
+        events.trigger('storage/change', o);
+    })
+
     export function get(key: string, callback: Function) {
         storageArea.get(key, function (o) {
             if (!TourabuEx.util.isEmpty(o)) {
