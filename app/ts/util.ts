@@ -85,7 +85,12 @@ module TourabuEx.util {
     }
 
     export function startTourabuWidget() {
-        chrome.windows.create({ url: GAME_URL, type: 'popup' });
+        chrome.windows.create({
+            url: GAME_URL,
+            type: 'popup',
+            width: 960,
+            height: 580
+        });
     }
 
     export function focusOrStartTourabu() {
