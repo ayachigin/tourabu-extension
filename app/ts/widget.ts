@@ -1,8 +1,6 @@
-var TourabuEx = TourabuEx || {},
-    chrome = chrome || {};
+﻿'use strict';
 
-(function () {
-    'use strict';
+module TourabuEx.widget {
     var widgetTab = null;
 
     TourabuEx.events.bind('message/content/load', function (_, mes) {
@@ -17,13 +15,18 @@ var TourabuEx = TourabuEx || {},
     });
 
     TourabuEx.events.bind('message/start/widget', function () {
+        console.log('message/widget/start');
         TourabuEx.util.startTourabuWidget();
     });
 
+    /*
     chrome.tabs.onZoomChange.addListener(function (o) {
         if (widgetTab && widgetTab.id === o.tabId) {
-            chrome.tabs.sendMessage(widgetTab.id, {type: 'zoom/change',
-                                                   scale: o.newZoomFactor});
+            chrome.tabs.sendMessage(widgetTab.id, {
+                type: 'zoom/change',
+                scale: o.newZoomFactor
+            });
         }
     });
-}());
+    */
+} 

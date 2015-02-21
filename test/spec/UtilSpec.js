@@ -1,26 +1,28 @@
-/*global describe, it, expect */
+/*global TourabuEx, describe, it, expect */
 
 describe('Utility functions', function () {
     'use strict';
-
+    var u = TourabuEx.util;
+    
     it ('Should be true when a is prefix of b', function () {
-        expect('hoge'.isPrefixOf('hogefuga')).toBeTruthy();
-        expect('hoge'.isPrefixOf('hoge')).toBeTruthy();
+        
+        expect(u.isPrefixOf('hoge', 'hogefuga')).toBeTruthy();
+        expect(u.isPrefixOf('hoge', 'hoge')).toBeTruthy();
     });
 
     it ('Should be false when a is not prefix of b', function () {
-        expect('oge'.isPrefixOf('hoge')).toBeFalsy();
-        expect('o'.isPrefixOf('hoge')).toBeFalsy();
+        expect(u.isPrefixOf('oge', 'hoge')).toBeFalsy();
+        expect(u.isPrefixOf('e', 'hoge')).toBeFalsy();
     });
 
     it ('Should be true when a is substring of b', function () {
-        expect('hoge'.isInfixOf('piyo hoge fuga')).toBeTruthy();
-        expect('hoge'.isInfixOf('hoge')).toBeTruthy();
-        expect('hoge'.isInfixOf('fuga hoge')).toBeTruthy();
+        expect(u.isInfixOf('hoge', 'piyo hoge fuga')).toBeTruthy();
+        expect(u.isInfixOf('hoge', 'hoge')).toBeTruthy();
+        expect(u.isInfixOf('hoge', 'fuga hoge')).toBeTruthy();
     });
 
     it ('should be false when a is not substring of b', function () {
-        expect('fuga'.isInfixOf('hoge piyo moge')).toBeFalsy();
-        expect('fuga'.isInfixOf('fu ga')).toBeFalsy();
+        expect(u.isInfixOf('pico', 'hoge piyo moge')).toBeFalsy();
+        expect(u.isInfixOf('fuga', 'fu ga')).toBeFalsy();
     });
 });

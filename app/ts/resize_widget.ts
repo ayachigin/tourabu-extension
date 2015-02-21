@@ -1,21 +1,18 @@
-/*global $ */
-var TourabuEx = TourabuEx || {},
-    chrome = chrome || {};
+﻿'use strict';
 
-(function () {
-    'use strict';
-    
+module TourabuEx.resizeWidget {
+
     var GAME_WIDTH = 960,
         GAME_HEIGHT = 580;
-    
-    function widgetProcess () {
+
+    function widgetProcess() {
         $(document).ready(function () {
             var width = GAME_WIDTH,
                 height = GAME_HEIGHT;
 
-            $(document.body).css({'overflow': 'hidden'});
+            $(document.body).css({ 'overflow': 'hidden' });
             resizeAndScroll(width, height);
-            onresized(function () {});
+            onresized(function () { });
         });
     }
 
@@ -24,17 +21,17 @@ var TourabuEx = TourabuEx || {},
         resize(width, height);
         scroll();
     }
-    
+
     function scroll() {
         var gameFrame = document.querySelector('#game_frame'),
-            top = gameFrame.offsetTop,
-            left = gameFrame.offsetLeft;
-                
+            top = (<any>gameFrame).offsetTop,
+            left = (<any>gameFrame).offsetLeft;
+
         window.scrollTo(left, top);
     }
 
     function resize(width, height) {
-        var outerWidth  = window.outerWidth - window.innerWidth + width,
+        var outerWidth = window.outerWidth - window.innerWidth + width,
             outerHeight = window.outerHeight - window.innerHeight + height;
         window.resizeTo(outerWidth, outerHeight);
     }
@@ -57,9 +54,10 @@ var TourabuEx = TourabuEx || {},
 
         if (mes.type === 'zoom/change') {
             console.log('zoom', mes);
-            var width  = parseInt(GAME_WIDTH * mes.scale, 10),
-                height = parseInt(GAME_HEIGHT * mes.scale, 10);
+            var width = Math.floor(GAME_WIDTH * mes.scale),
+                height = Math.floor(GAME_HEIGHT * mes.scale);
             resizeAndScroll(GAME_WIDTH, GAME_HEIGHT);
         }
     });
-}());
+
+}
