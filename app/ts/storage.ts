@@ -8,14 +8,16 @@ module TourabuEx.storage {
         events.trigger('storage/change', o);
     })
 
-    export function get(key: string, callback: Function) {
+    export function get(key: string): JQueryDeferred<any> {
+        var d = $.Deferred();
         storageArea.get(key, function (o) {
             if (!TourabuEx.util.isEmpty(o)) {
-                callback(o[key]);
+                d.resolve(o[key]);
             } else {
-                console.log('storage/key not forund: ' + key);
+                d.reject();
             }
         });
+        return d;
     }
 
     export function set(obj, callback?: Function) {

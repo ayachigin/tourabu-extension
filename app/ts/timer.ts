@@ -47,7 +47,7 @@ module TourabuEx.timer {
     }
 
     function loadTimers() {
-        TourabuEx.storage.get('timer_tasks', function (tasks: TimerTaskToSave[]) {
+        TourabuEx.storage.get('timer_tasks').done(function (tasks: TimerTaskToSave[]) {
             tasks.forEach((task) => {
                 var d = new Date(task.end);
                 if (TourabuEx.util.isValid(d)) {

@@ -9,7 +9,7 @@ module TourabuEx.popup {
 
 
     function loadSetting() {
-        storage.get('setting', function (s) {
+        storage.get('setting').done(function (s) {
             var k, el;
             for (k in (<Object>s)) {
                 if (s.hasOwnProperty(k)) {
