@@ -16,7 +16,7 @@ module TourabuEx.widget {
 
     TourabuEx.events.bind('message/start/widget', function () {
         console.log('message/widget/start');
-        TourabuEx.util.startTourabuWidget();
+        TourabuEx.util.focusOrStartTourabuWidget();
     });
 
     /*

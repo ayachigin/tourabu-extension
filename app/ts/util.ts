@@ -69,6 +69,22 @@ module TourabuEx.util {
         return d;
     }
 
+    export function getWidgetTab(): JQueryDeferred<chrome.tabs.Tab> {
+        var d = $.Deferred();
+        getToukenranbuTab().done((t) => {
+            chrome.windows.get(t.windowId,(w) => {
+                if (w.type === 'popup') {
+                    d.resolve(t);
+                } else {
+                    d.reject();
+                }
+            });
+        }).fail(() => {
+            d.reject();
+        });
+        return d;
+    }
+
     export function focusTourabu(tab?: chrome.tabs.Tab): void {
         function focus(tab: chrome.tabs.Tab) {
             chrome.windows.update(tab.windowId, { focused: true });
@@ -93,11 +109,15 @@ module TourabuEx.util {
         });
     }
 
+    export function focusOrStartTourabuWidget() {
+        getWidgetTab().done((t) => {
+            focusTourabu(t);
+        }).fail(startTourabuWidget);
+    }
+
     export function focusOrStartTourabu() {
         getToukenranbuTab().done(function (tab) {
             focusTourabu(tab);
-        }).fail(function () {
-            startTourabuWidget();
-        });
+        }).fail(startTourabuWidget);
     }
 }
