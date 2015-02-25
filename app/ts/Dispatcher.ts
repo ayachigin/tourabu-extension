@@ -52,7 +52,6 @@ module TourabuEx {
                         param: RequestBody = { url: r.url, body: r.requestBody.formData };
 
                     TourabuEx.events.trigger(eventType, param);
-                    return { cancel: false }
                 },
                 { urls: ['*://*.touken-ranbu.jp/*'] },
                 ['requestBody']);
