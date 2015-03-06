@@ -18,15 +18,4 @@ module TourabuEx.widget {
         console.log('message/widget/start');
         TourabuEx.util.focusOrStartTourabuWidget();
     });
-
-    /*
-    chrome.tabs.onZoomChange.addListener(function (o) {
-        if (widgetTab && widgetTab.id === o.tabId) {
-            chrome.tabs.sendMessage(widgetTab.id, {
-                type: 'zoom/change',
-                scale: o.newZoomFactor
-            });
-        }
-    });
-    */
 } 

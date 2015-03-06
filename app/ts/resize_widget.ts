@@ -3,7 +3,9 @@
 module TourabuEx.resizeWidget {
 
     var GAME_WIDTH = 960,
-        GAME_HEIGHT = 580;
+        GAME_HEIGHT = 580,
+        WINDOW_FRAME_WIDTH = 16,
+        WINDOW_FRAME_HEIGHT =  38;
 
     function widgetProcess() {
         $(document).ready(function () {
@@ -51,13 +53,5 @@ module TourabuEx.resizeWidget {
             widgetProcess();
             return;
         }
-
-        if (mes.type === 'zoom/change') {
-            console.log('zoom', mes);
-            var width = Math.floor(GAME_WIDTH * mes.scale),
-                height = Math.floor(GAME_HEIGHT * mes.scale);
-            resizeAndScroll(GAME_WIDTH, GAME_HEIGHT);
-        }
     });
-
 }
