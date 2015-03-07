@@ -46,6 +46,16 @@
                 "scripts/tourabu_content.js",
                 "scripts/resize_widget.js"
             ]
+        },
+        {
+            "matches": [
+                "*://osapi.dmm.com/gadgets/ifr?*aid=825012*"
+            ],
+            "js": [
+                "libs/jquery.min.js",
+                "scripts/game_frame_content.js"
+            ],
+            "all_frames": true
         }
     ],
     "author": "ayachi gin<ayachigin@gmail.com",
