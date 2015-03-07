@@ -3,7 +3,9 @@
 module TourabuEx.resizeWidget {
 
     var GAME_WIDTH = 960,
-        GAME_HEIGHT = 580;
+        GAME_HEIGHT = 580,
+        WINDOW_FRAME_WIDTH = 16,
+        WINDOW_FRAME_HEIGHT =  38;
 
     function widgetProcess() {
         $(document).ready(function () {
@@ -11,37 +13,84 @@ module TourabuEx.resizeWidget {
                 height = GAME_HEIGHT;
 
             $(document.body).css({ 'overflow': 'hidden' });
+            $('#game_frame').attr('width', '100%').css({ width: '100%' });
+
             resizeAndScroll(width, height);
-            onresized(function () { });
+
+            onresized(onResizedHandler);
         });
     }
 
     function resizeAndScroll(width, height) {
-        console.log(width, height);
         resize(width, height);
         scroll();
     }
 
     function scroll() {
-        var gameFrame = document.querySelector('#game_frame'),
-            top = (<any>gameFrame).offsetTop,
-            left = (<any>gameFrame).offsetLeft;
+        var gameFrame = document.getElementById('game_frame'),
+            top = gameFrame.offsetTop,
+            left = gameFrame.offsetLeft;
 
         window.scrollTo(left, top);
     }
 
+    /**
+    高さと幅のうち、変化量の大きい方を基準にして縦横比を維持しつつリサイズ
+    */
+    function onResizedHandler(oldWidth: number, oldHeight: number) {
+        var currentWidth = window.outerWidth - WINDOW_FRAME_WIDTH,
+            currentHeight = window.outerHeight - WINDOW_FRAME_HEIGHT,
+            diffWidth = Math.abs(oldWidth - currentWidth),
+            diffHeight = Math.abs(oldHeight - currentHeight),
+            newWidth,
+            newHeight;
+
+        if (diffWidth > diffHeight) {
+            newWidth = currentWidth;
+            newHeight = Math.ceil(GAME_HEIGHT * (newWidth / GAME_WIDTH));
+        } else {
+            newHeight = currentHeight;
+            newWidth = Math.ceil(GAME_WIDTH * (newHeight / GAME_HEIGHT));
+        }
+
+        chrome.runtime.sendMessage({
+            type: 'widget/resized',
+            body: {
+                width: window.innerWidth,
+                height: window.innerHeight
+            }
+        }, function () { });
+
+        return resizeAndScroll(newWidth, newHeight);
+    }
+
+    /**
+    内側のwidthとheightを基準にしてウィンドウをリサイズする
+    */
     function resize(width, height) {
-        var outerWidth = window.outerWidth - window.innerWidth + width,
-            outerHeight = window.outerHeight - window.innerHeight + height;
+        var outerWidth = WINDOW_FRAME_WIDTH + width,
+            outerHeight = WINDOW_FRAME_HEIGHT + height;
         window.resizeTo(outerWidth, outerHeight);
     }
 
-    function onresized(fn) {
-        var tid;
+    /**
+    リサイズが完了したらファイアーする何か
+    生のタイマーイベントは1pxごとに発火して
+    */
+    function onresized(fn: (width: number, height: number) => void): void {
+        var tid, width = null, height = null;
         $(window).resize(function () {
             if (tid) { window.clearTimeout(tid); }
+            if (!width) {
+                width = window.innerWidth;
+                height = window.innerHeight;
+            }
 
-            tid = window.setTimeout(fn, 200);
+            tid = window.setTimeout(function () {
+                fn(width, height);
+                width = null;
+                height = null;
+            }, 300);
         });
     }
 
@@ -51,13 +100,5 @@ module TourabuEx.resizeWidget {
             widgetProcess();
             return;
         }
-
-        if (mes.type === 'zoom/change') {
-            console.log('zoom', mes);
-            var width = Math.floor(GAME_WIDTH * mes.scale),
-                height = Math.floor(GAME_HEIGHT * mes.scale);
-            resizeAndScroll(GAME_WIDTH, GAME_HEIGHT);
-        }
     });
-
 }
