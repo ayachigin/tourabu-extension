@@ -25,6 +25,7 @@
             "scripts/capture.js",
             "scripts/Dispatcher.js",
             "scripts/widget.js",
+            "scripts/sstp.js",
             "scripts/main.js"
         ]
     },

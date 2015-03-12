@@ -40,6 +40,7 @@
     <TypeScriptCompile Include="Scripts\typings\webrtc\MediaStream.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\webrtc\RTCPeerConnection.d.ts" />
     <TypeScriptCompile Include="sound.ts" />
+    <TypeScriptCompile Include="sstp.ts" />
     <TypeScriptCompile Include="storage.ts" />
     <TypeScriptCompile Include="timer.ts" />
     <TypeScriptCompile Include="TourabuEx.ts" />
