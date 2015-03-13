@@ -14,6 +14,7 @@
             "libs/jquery.min.js",
             "scripts/TourabuEx.js",
             "scripts/util.js",
+            "scripts/Functools.js",
             "scripts/sound.js",
             "scripts/events.js",
             "scripts/storage.js",
