@@ -1,6 +1,6 @@
 {
     "name": "とうらぶえくすてんしょん",
-    "version": "0.4.4",
+    "version": "0.5.0",
     "manifest_version": 2,
     "description": "DMMのブラウザゲーム「刀剣乱舞」をちょっと遊びやすくする拡張機能です",
     "icons": {
@@ -14,6 +14,7 @@
             "libs/jquery.min.js",
             "scripts/TourabuEx.js",
             "scripts/util.js",
+            "scripts/Functools.js",
             "scripts/sound.js",
             "scripts/events.js",
             "scripts/storage.js",
@@ -25,6 +26,7 @@
             "scripts/capture.js",
             "scripts/Dispatcher.js",
             "scripts/widget.js",
+            "scripts/sstp.js",
             "scripts/main.js"
         ]
     },

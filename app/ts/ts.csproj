@@ -27,6 +27,7 @@
     <TypeScriptCompile Include="Dispatcher.ts" />
     <TypeScriptCompile Include="duty.ts" />
     <TypeScriptCompile Include="events.ts" />
+    <TypeScriptCompile Include="Functools.ts" />
     <TypeScriptCompile Include="game_frame_content.ts" />
     <TypeScriptCompile Include="main.ts" />
     <TypeScriptCompile Include="notifier.ts" />
@@ -40,6 +41,7 @@
     <TypeScriptCompile Include="Scripts\typings\webrtc\MediaStream.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\webrtc\RTCPeerConnection.d.ts" />
     <TypeScriptCompile Include="sound.ts" />
+    <TypeScriptCompile Include="sstp.ts" />
     <TypeScriptCompile Include="storage.ts" />
     <TypeScriptCompile Include="timer.ts" />
     <TypeScriptCompile Include="TourabuEx.ts" />

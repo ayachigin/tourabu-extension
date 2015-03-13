@@ -41,6 +41,10 @@ module TourabuEx.conquest {
         '20': 86400000
     };
 
+    export function fieldId2Time(fieldId: string): Functools.Maybe<number> {
+        return Functools.Maybe.pure(timetable[fieldId]);
+    }
+
     function notify(body: string, status: string) {
         var p: TourabuEx.notifier.Param = {
             body: body,
