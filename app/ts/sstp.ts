@@ -58,6 +58,6 @@ module TourabuEx.SSTP {
 
     TourabuEx.events.bind('timer/duty/end',(_, r) => {
         var c = new Client();
-        c.send('OnTourabuDutyStart,とうらぶえくすてんしょん,内番が終了しました。');
+        c.send('OnTourabuDutyEnd,とうらぶえくすてんしょん,内番が終了しました。');
     });
 }
