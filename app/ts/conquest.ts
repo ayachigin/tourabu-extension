@@ -1,6 +1,9 @@
 ﻿'use strict';
 
 module TourabuEx.conquest {
+
+    import Maybe = Functools.Maybe;
+
     interface TimeTable {
         [x: string]: number;
     }
@@ -41,8 +44,8 @@ module TourabuEx.conquest {
         '20': 86400000
     };
 
-    export function fieldId2Time(fieldId: string): Functools.Maybe<number> {
-        return Functools.Maybe.pure(timetable[fieldId]);
+    export function fieldId2Time(fieldId: string): Maybe<number> {
+        return Maybe.pure(timetable[fieldId]);
     }
 
     function notify(body: string, status: string) {
@@ -86,7 +89,7 @@ module TourabuEx.conquest {
     });
 
     TourabuEx.events.bind('conquest/cancel',(_, rparam: TourabuEx.RequestBody) => {
-        var body = <{ party_no: string[] }>rparam.body;
+        var body = rparam.body;
         console.log('timer/cancel', body.party_no[0]);
         TourabuEx.timer.cancel((task) => {
             console.log('cancel', task, body);
