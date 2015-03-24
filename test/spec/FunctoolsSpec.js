@@ -26,7 +26,7 @@
                     return v * 2;
                 }).fromMaybe(null)).toEqual(2);
 
-                expect((new Maybe(1)).maybe("", function (n) {
+                expect((new Maybe(1)).maybe('', function (n) {
                     return '' + n;
                 })).toEqual('1');
 
@@ -38,9 +38,9 @@
 
                 expect((new Maybe(undefined)).fmap(throwError).isNothing()).toBeTruthy();
 
-                expect((new Maybe(null)).maybe("a", throwError)).toEqual("a");
+                expect((new Maybe(null)).maybe('a', throwError)).toEqual('a');
 
-                expect((new Maybe(undefined)).fromMaybe("a")).toEqual("a");
+                expect((new Maybe(undefined)).fromMaybe('a')).toEqual('a');
             });
 
             it ('Functor Maybe', function () {

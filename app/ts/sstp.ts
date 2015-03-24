@@ -4,6 +4,8 @@
 module TourabuEx.SSTP {
     var HOST = '127.0.0.1:';
 
+    import Maybe = Functools.Maybe;
+
     class Client {
         private connection: WebSocket;
 
@@ -29,7 +31,7 @@ module TourabuEx.SSTP {
         var body = <TourabuEx.conquest.ConquestRequestBody> r.body,
             party = body.party_no[0];
 
-        Functools.Maybe.pure(body.field_id[0])
+        Maybe.pure(body.field_id[0])
             .bind(function (fid) {
             return TourabuEx.conquest.fieldId2Time(fid);
         })
@@ -40,7 +42,7 @@ module TourabuEx.SSTP {
             c.send('OnTourabuConquestStart,とうらぶえくすてんしょん,\\0第' + party +
                 '部隊が遠征を開始しました。\\n' + min +
                 '分後に帰還します。\\e,' + party + ',' + min);
-            return Functools.Maybe.Nothing();
+            return Maybe.Nothing();
         });
     });
 

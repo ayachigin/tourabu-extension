@@ -1,6 +1,9 @@
 ﻿'use strict';
 
 module TourabuEx.conquest {
+
+    import Maybe = Functools.Maybe;
+
     interface TimeTable {
         [x: string]: number;
     }
@@ -41,8 +44,8 @@ module TourabuEx.conquest {
         '20': 86400000
     };
 
-    export function fieldId2Time(fieldId: string): Functools.Maybe<number> {
-        return Functools.Maybe.pure(timetable[fieldId]);
+    export function fieldId2Time(fieldId: string): Maybe<number> {
+        return Maybe.pure(timetable[fieldId]).fmap((t) => { return t + (20 * 1000) });
     }
 
     function notify(body: string, status: string) {
@@ -55,30 +58,26 @@ module TourabuEx.conquest {
     }
 
     events.bind('conquest/start', (_, rparam) => {
-        var rbody: ConquestRequestBody = <ConquestRequestBody>rparam.body,
-            conquestTime = timetable[rbody.field_id[0]];
-        if (!conquestTime) {
-            console.log('not in conquest time table', rparam);
-            return;
-        }
+        var rbody: ConquestRequestBody = <ConquestRequestBody>rparam.body;
+        fieldId2Time(rbody.field_id[0]).fmap((conquestTime) => {
+            var d = new Date(Date.now() + conquestTime),
+                cparam: Param = {
+                    party_no: rbody.party_no[0],
+                    field_id: rbody.field_id[0]
+                },
+                task: TourabuEx.timer.TimerTask = {
+                    end: d,
+                    type: 'conquest',
+                    callbackParam: cparam
+                }
+            TourabuEx.timer.set(task);
 
-        var d = new Date(Date.now() + conquestTime),
-            cparam: Param = {
-                party_no: rbody.party_no[0],
-                field_id: rbody.field_id[0]
-            },
-            task: TourabuEx.timer.TimerTask = {
-                end: d,
-                type: 'conquest',
-                callbackParam: cparam
-            }
-        TourabuEx.timer.set(task);
-
-        var body = '第' + cparam.party_no +
-            '部隊が遠征に出発しました\n' +
-            Math.floor(conquestTime / 1000 / 60) +
-            '分後に帰還します';
-        notify(body, 'start');
+            var body = '第' + cparam.party_no +
+                '部隊が遠征に出発しました\n' +
+                Math.floor(conquestTime / 1000 / 60) +
+                '分後に帰還します';
+            notify(body, 'start');
+        });
     }) 
 
     TourabuEx.events.bind('timer/conquest/end', (_, cparam) => {
@@ -86,7 +85,7 @@ module TourabuEx.conquest {
     });
 
     TourabuEx.events.bind('conquest/cancel',(_, rparam: TourabuEx.RequestBody) => {
-        var body = <{ party_no: string[] }>rparam.body;
+        var body = rparam.body;
         console.log('timer/cancel', body.party_no[0]);
         TourabuEx.timer.cancel((task) => {
             console.log('cancel', task, body);
