@@ -5,7 +5,10 @@ module TourabuEx {
 
     export interface RequestBody {
         url: string;
-        body: Object;
+        body: {
+            party_no?: string[];
+            field_id?: string[];
+        };
     }
 
     export interface Message {

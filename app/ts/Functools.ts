@@ -1,4 +1,5 @@
-﻿module Functools {
+﻿'use strict';
+module TourabuEx.Functools {
     function id<a>(v: a): a {
         return v;
     }
