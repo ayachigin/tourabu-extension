@@ -24,7 +24,9 @@ module TourabuEx {
 
     export class Dispatcher {
         constructor() {
-            if (d) { return d; }
+            if (d) {
+                return d;
+            }
 
             d = this;
         }
