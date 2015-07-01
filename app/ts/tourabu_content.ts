@@ -13,10 +13,11 @@ module TourabuEx.content {
     });
 
     function getDimension(): TourabuEx.capture.Dimension {
-        var gameFrame = <any>document.querySelector('#game_frame'),
-            got = gameFrame.offsetTop,
-            gol = gameFrame.offsetLeft,
-            gw = gameFrame.offsetWidth,
+        var gameFrame = $('#game_frame'),
+            offset = gameFrame.offset(),
+            got = offset.top,
+            gol = offset.left,
+            gw = gameFrame[0].offsetWidth,
             wsy = (<any>window).scrollY,
             wsx = (<any>window).scrollX,
             wiw = window.innerWidth,
