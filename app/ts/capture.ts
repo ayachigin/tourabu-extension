@@ -29,11 +29,11 @@ module TourabuEx.capture {
     function capture(tab: chrome.tabs.Tab) {
         chrome.tabs.captureVisibleTab(tab.windowId, { format: 'png' },(dataUrl) => {
             getDimension(tab).done((dimension) => {
-                downloadImage(trimImage(dataUrl, dimension))
+                console.dir(dimension);
+                trimImage(dataUrl, dimension).then(downloadImage);
             }).fail(() => {
                 downloadImage(dataUrl);
             });
-
         });
     }
 
@@ -61,23 +61,26 @@ module TourabuEx.capture {
         });
     }
 
-    function trimImage(dataurl: string, dimension: Dimension): string {
-        var img = document.createElement('img'),
+    function trimImage(dataurl: string, dimension: Dimension):JQueryDeferred<string> {
+        var d = $.Deferred(),
+            img = new Image(),
             canvas = document.createElement('canvas'),
             ctx = canvas.getContext('2d');
-        img.src = dataurl;
         canvas.width = dimension.width;
         canvas.height = dimension.height;
-        ctx.drawImage(img,
-            dimension.x,
-            dimension.y,
-            dimension.width,
-            dimension.height,
-            0, 0,
-            dimension.width,
-            dimension.height);
-        img = img.src = ctx = null;
-
-        return canvas.toDataURL('image/png');
+        // context . drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
+        img.addEventListener('load',(e) => { 
+            ctx.drawImage(img,
+                dimension.x,
+                dimension.y,
+                dimension.width,
+                dimension.height,
+                0, 0,
+                dimension.width,
+                dimension.height);
+            d.resolve(canvas.toDataURL('image/png'));
+        });
+        img.src = dataurl;
+        return d;
     }
 }
