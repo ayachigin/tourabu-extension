@@ -90,4 +90,33 @@ module TourabuEx.Functools {
             return Maybe.Nothing();
         }
     }
+
+    export function range(s: number, e: number): number[] {
+        var ls = [], i;
+        for (i = s; i <= e; i++) {
+            ls[ls.length] = i;
+        }
+        return ls;
+    }
+
+    export interface Tuple<T, U> {
+        fst: T;
+        snd: U;
+    }
+
+    export function zip<T, U>(ls1: T[], ls2: U[]): Tuple<T, U>[] {
+        var xs = [], i, l = Math.max(ls1.length, ls2.length);
+
+        for (i = 0; i < l; i++) {
+            if (ls1[i] !== undefined && ls2[i] !== undefined) {
+                xs[xs.length] = {
+                    fst: ls1[i], snd: ls2[i]
+                };
+            } else {
+                break;
+            }
+        }
+
+        return xs;
+    }
 } 

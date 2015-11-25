@@ -22,19 +22,21 @@ module TourabuEx.capture {
 
     events.bind('message/capture/start',() => {
         TourabuEx.util.getToukenranbuTab().done((tab) => {
-            capture(tab);
+            capture(tab).done(downloadImage);
         });
     });
 
-    function capture(tab: chrome.tabs.Tab) {
+    export function capture(tab: chrome.tabs.Tab): JQueryPromise<string> {
+        var d = $.Deferred();
         chrome.tabs.captureVisibleTab(tab.windowId, { format: 'png' },(dataUrl) => {
             getDimension(tab).done((dimension) => {
                 console.dir(dimension);
-                trimImage(dataUrl, dimension).then(downloadImage);
+                trimImage(dataUrl, dimension).then(d.resolve);
             }).fail(() => {
-                downloadImage(dataUrl);
+                d.resolve(dataUrl);
             });
         });
+        return d.promise();
     }
 
     function getDimension(tab: chrome.tabs.Tab): JQueryDeferred<Dimension> {
@@ -50,7 +52,7 @@ module TourabuEx.capture {
         return dfd;
     }
 
-    function downloadImage(dataUrl: string): void {
+    export function downloadImage(dataUrl: string): void {
         var d = new Date(),
             ds = d.toLocaleString().replace(/[\/:]/g, '-').replace(/\s/, '.'),
             filename = 'とうらぶスクショ/' + ds + '.png';

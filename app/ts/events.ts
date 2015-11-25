@@ -4,8 +4,11 @@
 module TourabuEx.events {
 
     export interface Bind {
+        (e: 'complete/repair/repair', h: (ev: JQueryEventObject, requestId: string) => void);
         (e: 'conquest/start', h: (ev: JQueryEventObject, r: RequestBody) => void);
         (e: 'conquest/cancel', h: (ev: JQueryEventObject, r: RequestBody) => void);
+        (e: 'repair/repair', h: (ev: JQueryEventObject, r: RepairRequestBody) => void);
+        (e: 'repair/fast', h: (ev: JQueryEventObject, r: RepairRequestBody) => void);
         (e: 'timer/conquest/end', h: (ev: JQueryEventObject, r: conquest.Param) => void);
         (e: 'duty/start', h: (ev: JQueryEventObject, r: RequestBody) => void);
         (e: 'message', h: (ev: JQueryEventObject, r: ReceivedMessage) => void);
