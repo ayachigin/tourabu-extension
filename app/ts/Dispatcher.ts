@@ -5,10 +5,20 @@ module TourabuEx {
 
     export interface RequestBody {
         url: string;
+        id: string;
         body: {
             party_no?: string[];
             field_id?: string[];
         };
+    }
+
+    export interface RepairRequestBody {
+        url: string;
+        id: string;
+        body: {
+            slot_no: string[];
+            use_assist: string[];
+        }
     }
 
     export interface Message {
@@ -46,18 +56,33 @@ module TourabuEx {
         }
 
         startListeningRequest() {
+            // request
             chrome.webRequest.onBeforeRequest.addListener(
                 (r) => {
                     if (r.method === 'GET') { return {}; }
                     
                     // http://w003.touken-ranbu.jp/mission/index の mission/index の部分
                     var eventType = r.url.split('/').slice(3).join('/'),
-                        param: RequestBody = { url: r.url, body: r.requestBody.formData };
+                        param: RequestBody = { id: r.requestId, url: r.url, body: r.requestBody.formData };
 
                     TourabuEx.events.trigger(eventType, param);
                 },
                 { urls: ['*://*.touken-ranbu.jp/*'] },
                 ['requestBody']);
+
+            // complete
+            chrome.webRequest.onCompleted.addListener((r) => {
+                if (r.method === 'GET' ||
+                    (r.statusCode >= 300 && r.statusCode < 200)) {
+                    return {};
+                }
+
+                var eventType = 'complete/' + r.url.split('/').slice(3).join('/'),
+                    id = r.requestId;
+
+                TourabuEx.events.trigger(eventType, id);
+                return {};
+            }, {urls: ['<all_urls>'] });
         }
 
         startCountingTime() {

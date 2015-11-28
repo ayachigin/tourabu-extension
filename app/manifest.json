@@ -24,6 +24,7 @@
             "scripts/conquest.js",
             "scripts/duty.js",
             "scripts/capture.js",
+            "scripts/repair.js",
             "scripts/Dispatcher.js",
             "scripts/widget.js",
             "scripts/sstp.js",
