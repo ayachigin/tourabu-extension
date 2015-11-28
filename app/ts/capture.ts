@@ -39,7 +39,7 @@ module TourabuEx.capture {
         return d.promise();
     }
 
-    function getDimension(tab: chrome.tabs.Tab): JQueryDeferred<Dimension> {
+    export function getDimension(tab: chrome.tabs.Tab): JQueryDeferred<Dimension> {
         var dfd = $.Deferred();
         chrome.tabs.sendMessage(tab.id, { type: 'capture/start' },(dimension: Dimension) => {
             if (dimension) {

@@ -9,6 +9,10 @@ module TourabuEx.repair {
 
     var repairQueue: { [index: string]: number } = {};
 
+    export interface Param {
+        slot_no: number;
+    }
+
     console.log('repair module loaded');
 
     TourabuEx.events.bind('repair/repair',(_, r) => {
@@ -22,6 +26,20 @@ module TourabuEx.repair {
 
     });
 
+    TourabuEx.events.bind('repair/fast',(e, r) => {
+        timer.cancel((task) => {
+            return task.type === 'repair' && task.callbackParam.slot_no === r.body.slot_no[0];
+        });
+    });
+
+    TourabuEx.events.bind('timer/repair/end',(_, r) => {
+        notifier.set({
+            body: '手入れ部屋' + r.slot_no + 'の手入れが完了しました。',
+            title: '手入れ完了',
+            status: 'end'
+        });
+    });
+
     TourabuEx.events.bind('complete/repair/repair',(_, id) => {
         if (!(id in repairQueue)) {
             return;
@@ -32,10 +50,32 @@ module TourabuEx.repair {
 
         setTimeout(() => {
             TourabuEx.util.getToukenranbuTab().done((tab) => {
-                TourabuEx.capture.capture(tab).then((x) => {
-                    readTimeFromImage(x, slot);
-                }).then((d) => {
-                    console.log(d);
+                $.when(TourabuEx.capture.getDimension(tab), TourabuEx.capture.capture(tab))
+                    .done((dimension: TourabuEx.capture.Dimension, data: string) => {
+                    if (dimension.width !== 960 ||
+                        dimension.height !== 580) {
+                        console.error('size error on reading time from image', dimension);
+                        return;
+                    }
+                    readTimeFromImage(data, slot).done((d) => {
+                        console.log('read time done');
+                        var cparam: Param = {
+                                slot_no: slot
+                        },
+                            t = d.getTime() - Date.now(),
+                            task: timer.TimerTask = {
+                            end: d,
+                            type: 'repair',
+                            callbackParam: cparam
+                            };
+                        timer.set(task);
+
+                        notifier.set({
+                            body: '手入れを開始しました\n' + Math.floor(t / (3600 * 1000)) + '時間' +
+                            Math.floor(t / (60 * 1000))+ '分後に通知します',
+                            status: 'start'
+                        });
+                    });
                 });
             });
         }, 400);
@@ -93,10 +133,10 @@ module TourabuEx.repair {
         });
     }
 
-    function indexOfMinElement(ls: any[]): number {
+    function indexOfMinElement(ls: any[]): Functools.Tuple<number, number> {
         return zip(ls, range(0, ls.length)).reduce((x, y) => {
             return x.fst < y.fst ? x : y;
-        }).snd;
+        });
     }
 
     function readTimeFromImage(d: string, slotNumber: number): JQueryPromise<Date> {
@@ -105,31 +145,43 @@ module TourabuEx.repair {
             canvas: HTMLCanvasElement = document.createElement('canvas'),
             ctx = canvas.getContext('2d'),
             pos = getPosition(slotNumber),
-            i = new Image();
+            i = new Image(),
+            recognitionErrorThreshold = 0.01;
 
         canvas.width = 39;
         canvas.height = 33;
 
         i.addEventListener('load',(ev) => {
-            var vh, vm, vs,
+            var vh, vm, vs, tht, tmt, tst,
                 th, tm, ts, vecs;
             ctx.drawImage(i, pos.h.x, pos.h.y, 39, 33, 0, 0, 39, 33);
             vh = toVector(ctx, 39, 33, SPLIT);
-            th = indexOfMinElement(timeVec.map((x) => {
+            tht = indexOfMinElement(timeVec.map((x) => {
                 return vectorSub(x, vh);
             }));
+            th = tht.snd;
             ctx.drawImage(i, pos.m.x, pos.m.y, 39, 33, 0, 0, 39, 33);
             vm = toVector(ctx, 39, 33, SPLIT);
-            tm = indexOfMinElement(timeVec.map((x) => {
+            tmt = indexOfMinElement(timeVec.map((x) => {
                 return vectorSub(x, vm);
             }));
+            tm = tmt.snd;
             ctx.drawImage(i, pos.s.x, pos.s.y, 39, 33, 0, 0, 39, 33);
             vs = toVector(ctx, 39, 33, SPLIT);
-            ts = indexOfMinElement(timeVec.map((x) => {
+            tst = indexOfMinElement(timeVec.map((x) => {
                 return vectorSub(x, vs);
             }));
-            var time = Date.now() + (th * 3600 + tm * 60 + ts) * 1000
-            p.resolve(time);
+            ts = tst.snd;
+
+            if (tht.fst >= recognitionErrorThreshold ||
+                tmt.fst>= recognitionErrorThreshold ||
+                tst.fst>= recognitionErrorThreshold) {
+                p.reject('recognition error');
+                return;
+            }
+
+            var time = Date.now() + (th * 3600 + tm * 60 + ts) * 1000;
+            p.resolve(new Date(time));
             console.log('slot: ' + slotNumber + '\ntime: ' + th + '\nmin: ' + tm + '\nsec: ' + ts);
         });
         i.src = d;

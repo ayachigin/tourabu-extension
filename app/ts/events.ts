@@ -10,6 +10,7 @@ module TourabuEx.events {
         (e: 'repair/repair', h: (ev: JQueryEventObject, r: RepairRequestBody) => void);
         (e: 'repair/fast', h: (ev: JQueryEventObject, r: RepairRequestBody) => void);
         (e: 'timer/conquest/end', h: (ev: JQueryEventObject, r: conquest.Param) => void);
+        (e: 'timer/repair/end', h: (ev: JQueryEventObject, r: repair.Param) => void);
         (e: 'duty/start', h: (ev: JQueryEventObject, r: RequestBody) => void);
         (e: 'message', h: (ev: JQueryEventObject, r: ReceivedMessage) => void);
         (e: string, h: (ev: JQueryEventObject, r: ReceivedMessage) => void);
