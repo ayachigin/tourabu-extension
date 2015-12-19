@@ -36,6 +36,7 @@ module TourabuEx.repair {
         notifier.set({
             body: '手入れ部屋' + r.slot_no + 'の手入れが完了しました。',
             title: '手入れ完了',
+            icon: 'images/repair_48.png',
             status: 'end'
         });
     });
@@ -74,6 +75,7 @@ module TourabuEx.repair {
                             body: '手入れを開始しました\n' + Math.floor(t / (3600 * 1000)) + '時間' +
                             Math.floor(t / (60 * 1000) % 60) + '分' +
                             Math.floor(t / 1000 % 3600 % 60) + '秒後に通知します',
+                            icon: 'images/repair_48.png',
                             status: 'start'
                         });
                     });
