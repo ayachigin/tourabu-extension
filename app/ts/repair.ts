@@ -28,7 +28,7 @@ module TourabuEx.repair {
 
     TourabuEx.events.bind('repair/fast',(e, r) => {
         timer.cancel((task) => {
-            return task.type === 'repair' && task.callbackParam.slot_no === r.body.slot_no[0];
+            return task.type === 'repair' && task.callbackParam.slot_no === parseInt(r.body.slot_no[0], 10);
         });
     });
 
