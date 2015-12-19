@@ -178,6 +178,7 @@ module TourabuEx.repair {
                 tmt.fst>= recognitionErrorThreshold ||
                 tst.fst>= recognitionErrorThreshold) {
                 p.reject('recognition error');
+                console.error('Repair time recognition failed.')
                 return;
             }
 
