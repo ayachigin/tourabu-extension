@@ -4,8 +4,9 @@ module TourabuEx.resizeWidget {
 
     var GAME_WIDTH = 960,
         GAME_HEIGHT = 580,
-        WINDOW_FRAME_WIDTH = 16,
-        WINDOW_FRAME_HEIGHT =  38;
+        WINDOW_FRAME_WIDTH = window.outerWidth - window.innerWidth,
+        WINDOW_FRAME_HEIGHT = window.outerHeight - window.innerHeight;
+
 
     function widgetProcess() {
         $(document).ready(function () {
