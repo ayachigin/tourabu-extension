@@ -72,7 +72,8 @@ module TourabuEx.repair {
 
                         notifier.set({
                             body: '手入れを開始しました\n' + Math.floor(t / (3600 * 1000)) + '時間' +
-                            Math.floor(t / (60 * 1000))+ '分後に通知します',
+                            Math.floor(t / (60 * 1000) % 60) + '分' +
+                            Math.floor(t / 1000 % 3600 % 60) + '秒後に通知します',
                             status: 'start'
                         });
                     });
