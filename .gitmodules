@@ -1,0 +1,3 @@
+[submodule "app/ocrad.js"]
+	path = app/ocrad.js
+	url = https://github.com/antimatter15/ocrad.js.git
