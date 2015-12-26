@@ -19,14 +19,27 @@ main = do
   let dirName = "build/TourabuExtension" ++ newVersionStr ++ "/"
   makeTempDirectory dirName
   copyFilesToBuild dirName
+  removeChromeReload dirName
   createZipArchive dirName
   -- removeTempDirecotry dirName
   system "echo complete"
+
+removeChromeReload :: String -> IO ()
+removeChromeReload dirName = do
+  s <- U.readFile $ "app/manifest.json"
+  U.writeFile (dirName ++ "manifest.json") $ remomveReload s
+  system $ "rm " ++ dirName ++ "scripts/chromereload.js" 
+  return ()
+    where
+      remomveReload = unlines . 
+                      filter (\x -> not ("chromereload"`isInfixOf` x)) . lines
+
 
 copyFilesToBuild :: String -> IO ExitCode
 copyFilesToBuild dirName = do
   system $ "cp -r app/styles " ++ dirName
   system $ "cp -r app/scripts " ++ dirName
+  system $ "rm " ++ dirName ++ "scripts/*.map"
   system $ "cp -r app/sound " ++ dirName
   createDirectoryIfMissing True $ dirName ++ "ocrad.js"
   system $ "cp app/ocrad.js/ocrad.js " ++ dirName ++ "ocrad.js/"
@@ -72,7 +85,6 @@ modifyVersionNumber option s = do
                         "minor" -> major ++ "." ++ incr minor ++ ".0"
                         (_)     -> major ++ "." ++ minor ++ "." ++ incr fix
       newManifest = subRegex (mkRegex "[0-9]+[.][0-9]+[.][0-9]+") s newVersionStr
-  return $ (remomveReload newManifest, newVersionStr)
+  return $ (newManifest, newVersionStr)
      where
        incr i = show . succ $ (read i :: Int)
-       remomveReload = unlines . filter (\x -> not ("reload"`isInfixOf` x)) . lines
