@@ -1,7 +1,8 @@
 {
     "name": "とうらぶえくすてんしょん",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "manifest_version": 2,
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "description": "DMMのブラウザゲーム「刀剣乱舞」をちょっと遊びやすくする拡張機能です",
     "icons": {
         "16": "images/icon_16.png",
@@ -11,6 +12,7 @@
         "persistent": true,
         "scripts": [
             "scripts/chromereload.js",
+            "ocrad.js/ocrad.js",
             "libs/jquery.min.js",
             "scripts/TourabuEx.js",
             "scripts/util.js",
