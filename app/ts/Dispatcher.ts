@@ -62,7 +62,7 @@ module TourabuEx {
                     if (r.method === 'GET') { return {}; }
                     
                     // http://w003.touken-ranbu.jp/mission/index の mission/index の部分
-                    var eventType = r.url.split('/').slice(3).join('/'),
+                    var eventType = r.url.split('?')[0].split('/').slice(3).join('/'),
                         param: RequestBody = { id: r.requestId, url: r.url, body: r.requestBody.formData };
 
                     TourabuEx.events.trigger(eventType, param);
@@ -77,7 +77,7 @@ module TourabuEx {
                     return {};
                 }
 
-                var eventType = 'complete/' + r.url.split('/').slice(3).join('/'),
+                var eventType = 'complete/' + r.url.split('?')[0].split('/').slice(3).join('/'),
                     id = r.requestId;
 
                 TourabuEx.events.trigger(eventType, id);
