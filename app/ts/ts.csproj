@@ -39,6 +39,7 @@
     <TypeScriptCompile Include="Scripts\typings\filesystem\filesystem.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\filewriter\filewriter.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\OCRAD\ocrad.js.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\webrtc\MediaStream.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\webrtc\RTCPeerConnection.d.ts" />
     <TypeScriptCompile Include="sound.ts" />
