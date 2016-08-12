@@ -12,7 +12,8 @@ module TourabuEx.resizeWidget {
         $(document).ready(function () {
             var width = GAME_WIDTH,
                 height = GAME_HEIGHT;
-            $('#w>.dmm-ntgnavi').hide();
+            $('#dmm-ntgnavi-renew').hide();
+            $(".dmm-ntgnavi").hide()
             $(document.body).css({ 'overflow': 'hidden' });
             $('#game_frame').attr('width', '100%').css({ width: '100%' });
 
