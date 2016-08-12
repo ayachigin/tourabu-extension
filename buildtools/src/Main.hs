@@ -2,7 +2,7 @@ module Main where
 
 import Control.Monad (when)
 import Data.List (isInfixOf)
-import qualified System.IO.UTF8 as U
+--import qualified System.IO.UTF8 as U
 import System.Environment (getArgs)
 import System.Exit (ExitCode, exitFailure)
 import System.Process (system)
@@ -12,6 +12,7 @@ import Text.Regex
 
 main :: IO ExitCode
 main = do
+  _ <- system "chcp 65001"
   args <- getArgs
   when (elem "help" args) $ putStrLn "build [fix|minor|major]" >> exitFailure
   let option = if null args then "fix" else head args
@@ -26,12 +27,12 @@ main = do
 
 removeChromeReload :: String -> IO ()
 removeChromeReload dirName = do
-  s <- U.readFile $ "app/manifest.json"
-  U.writeFile (dirName ++ "manifest.json") $ remomveReload s
-  system $ "rm " ++ dirName ++ "scripts/chromereload.js" 
+  s <- readFile $ "app/manifest.json"
+  writeFile (dirName ++ "manifest.json") $ remomveReload s
+  system $ "rm " ++ dirName ++ "scripts/chromereload.js"
   return ()
     where
-      remomveReload = unlines . 
+      remomveReload = unlines .
                       filter (\x -> not ("chromereload"`isInfixOf` x)) . lines
 
 
@@ -69,10 +70,10 @@ createZipArchive dirName = do
 
 modifyManifest :: String -> IO String
 modifyManifest option = do
-  s <- U.readFile "app/manifest.json"
+  s <- readFile "app/manifest.json"
   case modifyVersionNumber option s of
      (Just (newManifest, newVersionStr)) ->
-       U.writeFile "app/manifest.json" newManifest >>
+       writeFile "app/manifest.json" newManifest >>
        return newVersionStr
 
 modifyVersionNumber :: String -> String -> Maybe (String, String)
