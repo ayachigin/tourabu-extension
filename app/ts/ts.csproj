@@ -32,6 +32,7 @@
     <TypeScriptCompile Include="main.ts" />
     <TypeScriptCompile Include="notifier.ts" />
     <TypeScriptCompile Include="popup.ts" />
+    <TypeScriptCompile Include="forge.ts" />
     <TypeScriptCompile Include="repair.ts" />
     <TypeScriptCompile Include="resize_widget.ts" />
     <TypeScriptCompile Include="Scripts\typings\chrome\chrome-app.d.ts" />

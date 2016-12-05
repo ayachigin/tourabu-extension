@@ -1,6 +1,6 @@
 {
     "name": "とうらぶえくすてんしょん",
-    "version": "0.6.5",
+    "version": "0.7.0",
     "manifest_version": 2,
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "description": "DMMのブラウザゲーム「刀剣乱舞」をちょっと遊びやすくする拡張機能です",
@@ -26,6 +26,7 @@
             "scripts/duty.js",
             "scripts/capture.js",
             "scripts/repair.js",
+            "scripts/forge.js",
             "scripts/Dispatcher.js",
             "scripts/widget.js",
             "scripts/sstp.js",

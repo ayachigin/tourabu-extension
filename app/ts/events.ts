@@ -5,12 +5,16 @@ module TourabuEx.events {
 
     export interface Bind {
         (e: 'complete/repair/repair', h: (ev: JQueryEventObject, requestId: string) => void);
+        (e: 'complete/forge/start', h: (ev: JQueryEventObject, requestId: string) => void);
         (e: 'conquest/start', h: (ev: JQueryEventObject, r: RequestBody) => void);
         (e: 'conquest/cancel', h: (ev: JQueryEventObject, r: RequestBody) => void);
         (e: 'repair/repair', h: (ev: JQueryEventObject, r: RepairRequestBody) => void);
         (e: 'repair/fast', h: (ev: JQueryEventObject, r: RepairRequestBody) => void);
+        (e: 'forge/start', h: (ev: JQueryEventObject, r: ForgeRequestBody) => void);
+        (e: 'forge/fast', h: (ev: JQueryEventObject, r: ForgeRequestBody) => void);
         (e: 'timer/conquest/end', h: (ev: JQueryEventObject, r: conquest.Param) => void);
         (e: 'timer/repair/end', h: (ev: JQueryEventObject, r: repair.Param) => void);
+        (e: 'timer/forge/end', h: (ev: JQueryEventObject, r: forge.Param) => void);
         (e: 'duty/start', h: (ev: JQueryEventObject, r: RequestBody) => void);
         (e: 'message', h: (ev: JQueryEventObject, r: ReceivedMessage) => void);
         (e: string, h: (ev: JQueryEventObject, r: ReceivedMessage) => void);

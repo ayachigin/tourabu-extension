@@ -21,6 +21,8 @@ module TourabuEx {
         }
     }
 
+    export type ForgeRequestBody = RepairRequestBody;
+
     export interface Message {
         type: string;
         body: any;
